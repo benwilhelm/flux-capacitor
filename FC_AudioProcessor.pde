@@ -95,4 +95,12 @@ class FC_AudioProcessor {
   public float getSignalMultiplier() {
     return signalMultiplier;
   }
+
+  public void setSignalOffset(int offset) {
+    signalOffset = offset;
+  }
+
+  public int getSignalOffset() {
+    return signalOffset;
+  }
 }
