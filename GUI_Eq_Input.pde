@@ -5,6 +5,12 @@ class GUI_Eq_Input extends GUI_Eq {
   }
 
   public void draw(int[] levels, int tickMin, int tickMax) {
+    pushMatrix();
+    translate(this.x, this.y);
+    noStroke();
+    fill(220);
+    rect(0, 0, w, h);
+
     float scale = (float)this.h / (float)this.channelMax;
     if (levels != null && levels.length > 0) {
       for (int i=0; i<this.w; i++) {
@@ -16,8 +22,10 @@ class GUI_Eq_Input extends GUI_Eq {
         }
 
         int level = (int)( scale * levels[levelIndex] );
-        line(i+x, this.h+y, i+x, this.h + y - level - 1);
+        line(i, this.h, i, this.h - level - 1);
       }
     }
+
+    popMatrix();
   }
 }

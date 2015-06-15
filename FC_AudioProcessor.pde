@@ -83,6 +83,11 @@ class FC_AudioProcessor {
     return envelopeMax;
   }
 
+  public void setEnvelopeRange(int min, int max) {
+    envelopeMin = min;
+    envelopeMax = max;
+  }
+
   public void setSignalMultiplier(float mult) {
     signalMultiplier = mult;
   }
