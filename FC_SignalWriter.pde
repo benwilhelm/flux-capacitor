@@ -28,6 +28,14 @@ class FC_SignalWriter {
     }
   }
 
+  void writeSimple(int[] channels, float[] inputLevels) {
+    int outputLevel = (int) (channelMax * max(inputLevels));
+
+    for (int i=0; i<channels.length; i++) {
+      writeChannel(channels[i], outputLevel);
+    }
+  }
+
   void writeSpan(int[] channels, float[] inputLevels) {
     if (inputLevels == null) {
       return;

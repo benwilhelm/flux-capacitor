@@ -57,7 +57,8 @@ class GUI_ChannelControl {
     
     if (enabled) {
       outputEq.draw(env);
-      signalWriter.writeSpan(whiteChannels, env);
+      // signalWriter.writeSpan(whiteChannels, env);
+      signalWriter.writeSimple(whiteChannels, env);
     }
 
     popMatrix();
