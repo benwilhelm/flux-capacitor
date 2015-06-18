@@ -15,27 +15,33 @@ FFT fft;
 class FC_AudioInput {
 
   public static final int TYPE_TRACK = 1;
-  public static final int TYPE_INPUT = 2;
+  public static final int TYPE_MIC   = 2;
   
-  FC_AudioInput(String trackName, int inputType) {
+  FC_AudioInput(int inputType, String trackName) {
     ac = new AudioContext();
     Gain g = new Gain(ac, 2, 0.3);
     ac.out.addInput(g);
 
-    SamplePlayer player = null;
-    try {
-      String samplePath = sketchPath("") + "data/" + trackName;
-      player = new SamplePlayer(ac, new Sample(samplePath));
-      g.addInput(player);
-    } catch (Exception e) {
-      e.printStackTrace();
+    switch (inputType) {
+      case TYPE_TRACK:
+        SamplePlayer player = null;
+        try {
+          String samplePath = sketchPath("") + "data/" + trackName;
+          player = new SamplePlayer(ac, new Sample(samplePath));
+          g.addInput(player);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        break;
+
+      case TYPE_MIC:
+        UGen microphoneIn = ac.getAudioInput();
+        g.addInput(microphoneIn);
+        break;
     }
 
-
-    // UGen microphoneIn = ac.getAudioInput();
     sfs = new ShortFrameSegmenter(ac);
     sfs.addInput(ac.out);
-    // sfs.addInput(microphoneIn);
     fft = new FFT();
     sfs.addListener(fft);
     ps = new PowerSpectrum();
@@ -54,8 +60,8 @@ class FC_AudioInput {
   /**
    * Returns linear features of audio signal
    */
-  public int[] getFeaturesLinear() {
-    int[] features = {};
+  public float[] getFeaturesLinear() {
+    float[] features = {};
     return features;
   }
 }

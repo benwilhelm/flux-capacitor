@@ -2,6 +2,7 @@ import controlP5.*;
 
 class GUI_ChannelControl {
 
+  PApplet applet;
   FC_AudioProcessor audioProcessor;
   GUI_Eq_Input inputEq;
   GUI_Eq outputEq;
@@ -11,18 +12,22 @@ class GUI_ChannelControl {
   Range envelopeRange;
   Slider multiplierSlider, offsetSlider;
 
+  FC_SignalWriter signalWriter;
+
   int x, y;
+  int[] whiteChannels = { 5, 6, 9, 10, 11 };
   final static int PANEL_WIDTH  = 400;
   final static int PANEL_HEIGHT = 200;
 
-  GUI_ChannelControl(FC_AudioProcessor processor, int xCoord, int yCoord) {
+  GUI_ChannelControl(PApplet p, FC_AudioProcessor processor, int xCoord, int yCoord) {
+    applet = p;
     audioProcessor = processor;
     x = xCoord;
     y = yCoord;
     inputEq  = new GUI_Eq_Input(10,  10, 150, 50);
     outputEq = new GUI_Eq(10, 90, 150, 50);
 
-    control = new ControlP5(APPLET);
+    control = new ControlP5(applet);
 
     rand = new Random();
   }
@@ -31,6 +36,7 @@ class GUI_ChannelControl {
     inputEq.setup();
     outputEq.setup();
 
+    signalWriter = new FC_SignalWriter(FC_SignalWriter.OUTPUT_MODE_PIN);
     envelopeRange = this.setupEnvelopeRange();
     multiplierSlider = this.setupMultiplierSlider();
     offsetSlider = this.setupOffsetSlider();
@@ -44,7 +50,9 @@ class GUI_ChannelControl {
     fill(200);
     rect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
     inputEq.draw(audioProcessor.getScaledFeatures(), audioProcessor.getEnvelopeMin(), audioProcessor.getEnvelopeMax() );
-    outputEq.draw(audioProcessor.getEnvelope());
+    float[] env = audioProcessor.getEnvelope();
+    outputEq.draw(env);
+    signalWriter.writeSpan(whiteChannels, env);
 
     popMatrix();
   }

@@ -30,8 +30,8 @@ class FC_AudioProcessor {
   /**
    * returns audioInput's features mapped through the envelope parameters
    */
-  public int[] getEnvelope() {
-    int[] levels = getScaledFeatures();
+  public float[] getEnvelope() {
+    float[] levels = getScaledFeatures();
     if (levels.length > 0) {
       int eMin = envelopeMin;
       int eMax = envelopeMin < envelopeMax ? envelopeMax : envelopeMin;
@@ -44,16 +44,15 @@ class FC_AudioProcessor {
   /**
    * Passthru method for audioInput.getFeatures()
    */
-  public int[] getScaledFeatures() {
+  public float[] getScaledFeatures() {
     float[] features = audioInput.getFeatures();
-    int[]   outputLevels = {};
+    float[] outputLevels = {};
     if (features != null && features.length > 0) {
       for (int i=0; i<features.length; i++) {
-        float feature = features[i];        
-        int level = (int)(feature * CHANNEL_MAX);
+        float level = features[i];
         level *= signalMultiplier;
         level += signalOffset;
-        level  = constrain(level, 0, CHANNEL_MAX);
+        level  = constrain(level, 0, 1);
         outputLevels = append(outputLevels, level);
       }
     }
@@ -63,7 +62,7 @@ class FC_AudioProcessor {
   /**
    * Passthru method for audioInput.getFeaturesLinear()
    */
-  public int[] getInputFeaturesLinear() {
+  public float[] getInputFeaturesLinear() {
     return audioInput.getFeaturesLinear();
   }
 
