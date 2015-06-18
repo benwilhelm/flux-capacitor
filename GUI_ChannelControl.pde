@@ -11,11 +11,13 @@ class GUI_ChannelControl {
   ControlP5 control;
   Range envelopeRange;
   Slider multiplierSlider, offsetSlider;
+  Bang enableButton;
 
   FC_SignalWriter signalWriter;
 
   int x, y;
   int[] whiteChannels = { 5, 6, 9, 10, 11 };
+  protected boolean enabled;
   final static int PANEL_WIDTH  = 400;
   final static int PANEL_HEIGHT = 200;
 
@@ -40,6 +42,7 @@ class GUI_ChannelControl {
     envelopeRange = this.setupEnvelopeRange();
     multiplierSlider = this.setupMultiplierSlider();
     offsetSlider = this.setupOffsetSlider();
+    enableButton = this.setupEnableBang();
   }
 
   public void draw() {
@@ -51,8 +54,11 @@ class GUI_ChannelControl {
     rect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
     inputEq.draw(audioProcessor.getScaledFeatures(), audioProcessor.getEnvelopeMin(), audioProcessor.getEnvelopeMax() );
     float[] env = audioProcessor.getEnvelope();
-    outputEq.draw(env);
-    signalWriter.writeSpan(whiteChannels, env);
+    
+    if (enabled) {
+      outputEq.draw(env);
+      signalWriter.writeSpan(whiteChannels, env);
+    }
 
     popMatrix();
   }
@@ -96,10 +102,29 @@ class GUI_ChannelControl {
                   .setBroadcast(true);
   }
 
+  Bang setupEnableBang() {
+    return control.addBang("enableButton")
+                  .setPosition(this.x, this.y)
+                  .setSize(10, 10)
+                  .setId(rand.nextInt())
+                  .setTriggerEvent(Bang.RELEASE)
+                  .setLabelVisible(false);
+  }
+
+
+  boolean toggleEnabled() {
+    this.enabled = !this.enabled;
+    return this.enabled;
+  }
 
   void controlEvent(ControlEvent e) {
     int eId = e.getId();
     
+    // ENABLE/DISABLE
+    if (eId == enableButton.getId()) {
+      toggleEnabled();
+    }
+
     // ENVELOPE RANGE
     if (eId == envelopeRange.getId()) {
       int min = (int)e.getController().getArrayValue(0);
