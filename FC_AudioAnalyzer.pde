@@ -3,7 +3,7 @@
  * providing the values from the selected envelope transformations
  */
 
-class FC_AudioProcessor {
+class FC_AudioAnalyzer {
 
   FC_AudioInput audioInput;
 
@@ -14,7 +14,7 @@ class FC_AudioProcessor {
 
   public final static int CHANNEL_MAX = 256;
 
-  FC_AudioProcessor(FC_AudioInput theInput) {
+  FC_AudioAnalyzer(FC_AudioInput theInput) {
     audioInput = theInput;
   }
 

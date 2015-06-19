@@ -10,7 +10,7 @@ FFT fft;
 /** 
  * This class is an abstraction to allow for substitution of different
  * audio libraries, such as Minim or Beads. Responsible for providing a
- * raw audio signal or Fast Fourier Transform to the FC_AudioProcessor class
+ * raw audio signal or Fast Fourier Transform to the FC_AudioAnalyzer class
  */
 class FC_AudioInput {
 

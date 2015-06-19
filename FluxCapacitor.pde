@@ -3,7 +3,7 @@ import processing.serial.*;
 import cc.arduino.*;
 
 FC_AudioInput input1;
-FC_AudioProcessor processor1, processor2;
+FC_AudioAnalyzer analyzer1, analyzer2;
 GUI_ChannelControl channel1Control, channel2Control;
 
 Arduino arduino;
@@ -20,11 +20,11 @@ void setup() {
 
   input1 = new FC_AudioInput(FC_AudioInput.TYPE_MIC, "");
   
-  processor1 = new FC_AudioProcessor(input1);
-  processor2 = new FC_AudioProcessor(input1);
+  analyzer1 = new FC_AudioAnalyzer(input1);
+  analyzer2 = new FC_AudioAnalyzer(input1);
 
-  channel1Control = new GUI_ChannelControl(this, processor1, 10,  10);
-  channel2Control = new GUI_ChannelControl(this, processor2, 10, 220);
+  channel1Control = new GUI_ChannelControl(this, analyzer1, 10,  10);
+  channel2Control = new GUI_ChannelControl(this, analyzer2, 10, 220);
 
   channel1Control.setup();
   channel2Control.setup();

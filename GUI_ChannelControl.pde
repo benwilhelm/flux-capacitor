@@ -3,7 +3,7 @@ import controlP5.*;
 class GUI_ChannelControl {
 
   PApplet applet;
-  FC_AudioProcessor audioProcessor;
+  FC_AudioAnalyzer audioAnalyzer;
   GUI_Eq_Input inputEq;
   GUI_Eq outputEq;
   Random rand;
@@ -21,9 +21,9 @@ class GUI_ChannelControl {
   final static int PANEL_WIDTH  = 400;
   final static int PANEL_HEIGHT = 200;
 
-  GUI_ChannelControl(PApplet p, FC_AudioProcessor processor, int xCoord, int yCoord) {
+  GUI_ChannelControl(PApplet p, FC_AudioAnalyzer analyzer, int xCoord, int yCoord) {
     applet = p;
-    audioProcessor = processor;
+    audioAnalyzer = analyzer;
     x = xCoord;
     y = yCoord;
     inputEq  = new GUI_Eq_Input(10,  10, 150, 50);
@@ -52,8 +52,8 @@ class GUI_ChannelControl {
     noStroke();
     fill(200);
     rect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
-    inputEq.draw(audioProcessor.getScaledFeatures(), audioProcessor.getEnvelopeMin(), audioProcessor.getEnvelopeMax() );
-    float[] env = audioProcessor.getEnvelope();
+    inputEq.draw(audioAnalyzer.getScaledFeatures(), audioAnalyzer.getEnvelopeMin(), audioAnalyzer.getEnvelopeMax() );
+    float[] env = audioAnalyzer.getEnvelope();
     
     if (enabled) {
       outputEq.draw(env);
@@ -74,8 +74,8 @@ class GUI_ChannelControl {
                   .setLabelVisible(false)
                   .setSize(150, 20)
                   .setHandleSize(20)
-                  .setRange(0, FC_AudioProcessor.CHANNEL_MAX)
-                  .setRangeValues(audioProcessor.getEnvelopeMin(), audioProcessor.getEnvelopeMax())
+                  .setRange(0, FC_AudioAnalyzer.CHANNEL_MAX)
+                  .setRangeValues(audioAnalyzer.getEnvelopeMin(), audioAnalyzer.getEnvelopeMax())
                   .setBroadcast(true)
                   .setColorForeground(color(96,40))
                   .setColorBackground(color(96,40));    
@@ -98,7 +98,7 @@ class GUI_ChannelControl {
                   .setBroadcast(false)
                   .setPosition(this.x+225, this.y+10)
                   .setSize(20,150)
-                  .setRange(-1*FC_AudioProcessor.CHANNEL_MAX, FC_AudioProcessor.CHANNEL_MAX)
+                  .setRange(-1*FC_AudioAnalyzer.CHANNEL_MAX, FC_AudioAnalyzer.CHANNEL_MAX)
                   .setValue(0)
                   .setBroadcast(true);
   }
@@ -130,19 +130,19 @@ class GUI_ChannelControl {
     if (eId == envelopeRange.getId()) {
       int min = (int)e.getController().getArrayValue(0);
       int max = (int)e.getController().getArrayValue(1);
-      audioProcessor.setEnvelopeRange(min, max);
+      audioAnalyzer.setEnvelopeRange(min, max);
     }
 
     // SIGNAL MULTIPLIER
     if (eId == multiplierSlider.getId()) {
       float val = multiplierSlider.getValue();
-      audioProcessor.setSignalMultiplier(val);
+      audioAnalyzer.setSignalMultiplier(val);
     }
 
     // SIGNAL OFFSET
     if (eId == offsetSlider.getId()) {
       int val = (int)offsetSlider.getValue();
-      audioProcessor.setSignalOffset(val);
+      audioAnalyzer.setSignalOffset(val);
     }
   }
 }
