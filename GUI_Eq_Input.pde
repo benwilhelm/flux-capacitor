@@ -4,7 +4,7 @@ class GUI_Eq_Input extends GUI_Eq {
     super(xCoord, yCoord, width, height);
   }
 
-  public void draw(float[] levels, int tickMin, int tickMax) {
+  public void draw(float[] levels, int domFreqBin, int tickMin, int tickMax) {
     pushMatrix();
     translate(this.x, this.y);
     noStroke();
@@ -24,6 +24,15 @@ class GUI_Eq_Input extends GUI_Eq {
         line(i, this.h, i, this.h - level - 1);
       }
     }
+
+    stroke(255, 0, 0);
+    int domFreqX;
+    if (levels.length > 0) {
+      domFreqX = domFreqBin * this.w / levels.length;
+    } else {
+      domFreqX = 0;
+    }
+    line(domFreqX, this.h, domFreqX, 0);
 
     popMatrix();
   }

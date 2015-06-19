@@ -88,7 +88,7 @@ class FC_SignalWriter {
       arduino.analogWrite(channel, intensity);
     }
 
-    text(channel + ": " + level, channel * 80 - 400, 550);
+    // text(channel + ": " + level, channel * 80 - 400, 550);
   }
 
   void writeDmx(int channel, int level) {

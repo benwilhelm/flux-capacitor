@@ -4,7 +4,7 @@ class GUI_ChannelControl {
 
   PApplet applet;
   FC_AudioAnalyzer audioAnalyzer;
-  GUI_Eq_Input inputEq;
+  GUI_Eq_Input  inputEq;
   GUI_Eq outputEq;
   Random rand;
 
@@ -52,13 +52,15 @@ class GUI_ChannelControl {
     noStroke();
     fill(200);
     rect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
-    inputEq.draw(audioAnalyzer.getScaledFeatures(), audioAnalyzer.getEnvelopeMin(), audioAnalyzer.getEnvelopeMax() );
     float[] env = audioAnalyzer.getEnvelope();
+    int domFreqBin = audioAnalyzer.getDominantFrequencyBin();
     
+    inputEq.draw(audioAnalyzer.getScaledFeatures(), domFreqBin, audioAnalyzer.getEnvelopeMin(), audioAnalyzer.getEnvelopeMax() );
     if (enabled) {
-      outputEq.draw(env);
+      outputEq.draw(env, domFreqBin);
       // signalWriter.writeSpan(whiteChannels, env);
-      signalWriter.writeSimple(whiteChannels, env);
+      // signalWriter.writeSimple(whiteChannels, env);
+      text(domFreqBin + "", 10, 550);
     }
 
     popMatrix();

@@ -6,6 +6,7 @@ AudioContext ac;
 ShortFrameSegmenter sfs;
 PowerSpectrum ps;
 MelSpectrum mel;
+Frequency domFreq;
 FFT fft;
 
 /** 
@@ -47,24 +48,29 @@ class FC_AudioInput {
     sfs.addListener(fft);
     ps = new PowerSpectrum();
     fft.addListener(ps);
-    mel = new MelSpectrum(44000, 256);
+    mel = new MelSpectrum(7, 256);
     ps.addListener(mel);
+    domFreq = new Frequency(7);
+    mel.addListener(domFreq);
     ac.out.addDependent(sfs);
     ac.start();
   }
 
-  /**
-   * Returns logarithmically mapped features of audio signal
-   */
   public float[] getFeatures() {
     return mel.getFeatures();
   }
 
-  /**
-   * Returns linear features of audio signal
-   */
-  public float[] getFeaturesLinear() {
-    float[] features = {};
-    return features;
+  public int getDominantFrequencyBin() {
+    try {
+      float freq = domFreq.getFeatures();
+      int bin = mel.getBinForFreq(freq);
+      if (bin == 255) {
+        bin = 0;
+      }
+      return bin;
+    } catch (Exception e) {
+      return 0;
+    }
   }
+
 }

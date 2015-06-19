@@ -63,10 +63,10 @@ class FC_AudioAnalyzer {
   }
 
   /**
-   * Passthru method for audioInput.getFeaturesLinear()
+   * Passthru method for audioInput.getDominantFrequency()
    */
-  public float[] getInputFeaturesLinear() {
-    return audioInput.getFeaturesLinear();
+  public int getDominantFrequencyBin() {
+    return audioInput.getDominantFrequencyBin();
   }
 
   public void setEnvelopeMin(int min) {
