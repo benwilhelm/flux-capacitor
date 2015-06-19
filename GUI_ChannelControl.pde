@@ -87,8 +87,8 @@ class GUI_ChannelControl {
                   .setBroadcast(false)
                   .setPosition(this.x+175, this.y+10)
                   .setSize(20,150)
-                  .setRange(0,10)
-                  .setValue(1)
+                  .setRange(-10,10)
+                  .setValue(0)
                   .setBroadcast(true);
   }
 
@@ -98,7 +98,7 @@ class GUI_ChannelControl {
                   .setBroadcast(false)
                   .setPosition(this.x+225, this.y+10)
                   .setSize(20,150)
-                  .setRange(-1*FC_AudioAnalyzer.CHANNEL_MAX, FC_AudioAnalyzer.CHANNEL_MAX)
+                  .setRange(-1, 1)
                   .setValue(0)
                   .setBroadcast(true);
   }
@@ -141,7 +141,7 @@ class GUI_ChannelControl {
 
     // SIGNAL OFFSET
     if (eId == offsetSlider.getId()) {
-      int val = (int)offsetSlider.getValue();
+      float val = offsetSlider.getValue();
       audioAnalyzer.setSignalOffset(val);
     }
   }

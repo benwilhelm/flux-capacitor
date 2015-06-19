@@ -9,7 +9,7 @@ class FC_AudioAnalyzer {
 
   protected int envelopeMin = 0; 
   protected int envelopeMax = 50; 
-  protected int signalOffset  = 0;
+  protected float signalOffset  = 0;
   protected float signalMultiplier = 1;
 
   public final static int CHANNEL_MAX = 256;
@@ -47,10 +47,13 @@ class FC_AudioAnalyzer {
   public float[] getScaledFeatures() {
     float[] features = audioInput.getFeatures();
     float[] outputLevels = {};
+
+    float multiplyBy = translateMultiplier(signalMultiplier);
+
     if (features != null && features.length > 0) {
       for (int i=0; i<features.length; i++) {
         float level = features[i];
-        level *= signalMultiplier;
+        level *= multiplyBy;
         level += signalOffset;
         level  = constrain(level, 0, 1);
         outputLevels = append(outputLevels, level);
@@ -95,11 +98,26 @@ class FC_AudioAnalyzer {
     return signalMultiplier;
   }
 
-  public void setSignalOffset(int offset) {
+  public void setSignalOffset(float offset) {
     signalOffset = offset;
   }
 
-  public int getSignalOffset() {
+  public float getSignalOffset() {
     return signalOffset;
+  }
+
+  /**
+   * Poor man's log scale for the multiplier.
+   * Negative values divide, positive values multiply
+   * Values between -1 and 1 do nothing
+   */
+  protected float translateMultiplier(float mult) {
+    if (mult >= -1 && mult <= 1) {
+      mult = 1;
+    } else if (mult < -1) {
+      mult = -1 / mult;
+    }
+
+    return mult;
   }
 }
