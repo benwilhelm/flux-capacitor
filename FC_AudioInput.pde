@@ -5,6 +5,7 @@ import org.jaudiolibs.beads.*;
 AudioContext ac;
 ShortFrameSegmenter sfs;
 PowerSpectrum ps;
+MelSpectrum mel;
 FFT fft;
 
 /** 
@@ -46,6 +47,8 @@ class FC_AudioInput {
     sfs.addListener(fft);
     ps = new PowerSpectrum();
     fft.addListener(ps);
+    mel = new MelSpectrum(44000, 256);
+    ps.addListener(mel);
     ac.out.addDependent(sfs);
     ac.start();
   }
@@ -54,7 +57,7 @@ class FC_AudioInput {
    * Returns logarithmically mapped features of audio signal
    */
   public float[] getFeatures() {
-    return ps.getFeatures();
+    return mel.getFeatures();
   }
 
   /**
