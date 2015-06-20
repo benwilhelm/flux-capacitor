@@ -4,7 +4,7 @@ import cc.arduino.*;
 
 FC_AudioInput input1;
 FC_AudioAnalyzer analyzer1, analyzer2;
-GUI_ChannelControl channel1Control, channel2Control;
+View_ChannelControl channel1Control, channel2Control;
 
 Arduino arduino;
 
@@ -23,8 +23,8 @@ void setup() {
   analyzer1 = new FC_AudioAnalyzer(input1);
   analyzer2 = new FC_AudioAnalyzer(input1);
 
-  channel1Control = new GUI_ChannelControl(this, analyzer1, 10,  10);
-  channel2Control = new GUI_ChannelControl(this, analyzer2, 10, 220);
+  channel1Control = new View_ChannelControl(this, analyzer1, 10,  10);
+  channel2Control = new View_ChannelControl(this, analyzer2, 10, 220);
 
   channel1Control.setup();
   channel2Control.setup();

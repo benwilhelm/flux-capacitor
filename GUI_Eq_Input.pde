@@ -17,7 +17,7 @@ class GUI_Eq_Input extends GUI_Eq {
         
         stroke(96);
         if (levelIndex >= tickMin && levelIndex < tickMax) {
-          stroke(128, 128, 0);
+          stroke(96, 192, 0);
         }
 
         int level = (int)( levels[levelIndex] * this.h );
