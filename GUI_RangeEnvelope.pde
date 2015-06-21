@@ -4,16 +4,15 @@ color foreGround = color(120, 80);
 color backGround = color( 96, 60);
 
 class GUI_RangeEnvelope extends Range {
-
-
   
   ControlP5 control;
   int x, y;
 
   Random rand = new Random();
 
-  GUI_RangeEnvelope(ControlP5 ctrl, int xCoord, int yCoord) {
-    super(ctrl, "envelopeRange");
+  GUI_RangeEnvelope(ControlP5 ctrl, String name, int xCoord, int yCoord) {
+    super(ctrl, name);
+    control = ctrl;
     this.x = xCoord;
     this.y = yCoord;
 

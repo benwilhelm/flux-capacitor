@@ -6,8 +6,9 @@ class GUI_BangEnableChannel extends Bang {
   ControlP5 control;
   int x, y;
 
-  GUI_BangEnableChannel(ControlP5 ctrl, int xCoord, int yCoord) {
-    super(ctrl, "enableButton");
+  GUI_BangEnableChannel(ControlP5 ctrl, String name, int xCoord, int yCoord) {
+    super(ctrl, name);
+    control = ctrl;
     this.x = xCoord;
     this.y = yCoord;
 

@@ -19,7 +19,6 @@ class View_ChannelControl {
   GUI_GroupOutputHSB          outputGroupHSB;
   GUI_DropdownOutputMode      outputModeSelector;
 
-
   FC_SignalWriter signalWriter;
 
   int x, y;
@@ -40,18 +39,19 @@ class View_ChannelControl {
     control = new ControlP5(applet);
     signalWriter = new FC_SignalWriter(FC_SignalWriter.OUTPUT_MODE_PIN);
 
-    enableButton     = new GUI_BangEnableChannel(control, this.x+5, this.y+10);
+    enableButton     = new GUI_BangEnableChannel(control, "enableButton", this.x+5, this.y+10);
     inputEq  = new GUI_Eq_Input(25,  10, 200, 50);
     outputEq = new GUI_Eq(25, 90, 200, 50);
-    envelopeRange    = new GUI_RangeEnvelope(control, this.x+5, this.y+65);
+    envelopeRange    = new GUI_RangeEnvelope(control, "envelopeRange", this.x+5, this.y+65);
 
-    multiplierSlider = new GUI_SliderMultiplier(control, this.x+250, this.y+10);
-    offsetSlider     = new GUI_SliderOffset(control, this.x+300, this.y+10);
+    multiplierSlider = new GUI_SliderMultiplier(control, "multiplierSlider", this.x+250, this.y+10);
+    offsetSlider     = new GUI_SliderOffset(control, "offsetSlider", this.x+300, this.y+10);
 
-    outputChannelSelector = new GUI_TextfieldOutputChannels(control, this.x+450, this.y+10);
-    outputGroupSimple     = new GUI_GroupOutputSimple(control, this.x+350, this.y+75);
-    outputGroupHSB        = new GUI_GroupOutputHSB(control, this.x+350, this.y+75);
-    outputModeSelector    = new GUI_DropdownOutputMode(control, this.x+350, this.y+60);
+    outputChannelSelector = new GUI_TextfieldOutputChannels(control, "outputChannelSelector", this.x+450, this.y+10);
+    outputGroupSimple     = new GUI_GroupOutputSimple(control, "outputGroupSimple", this.x+350, this.y+75);
+    outputGroupHSB        = new GUI_GroupOutputHSB(control, "outputGroupHSB", this.x+350, this.y+75);
+    outputModeSelector    = new GUI_DropdownOutputMode(control, "outputModeSelector", this.x+350, this.y+60);
+
   }
 
   public void setup() {

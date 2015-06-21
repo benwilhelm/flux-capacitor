@@ -6,8 +6,11 @@ class GUI_GroupOutputSimple extends Group {
   ControlP5 control;
   int x, y;
 
-  GUI_GroupOutputSimple(ControlP5 ctrl, int xCoord, int yCoord) {
-    super(ctrl, "outputGroupSimple");
+  GUI_DropdownAttributeSelector simpleAttributeSelector;
+
+  GUI_GroupOutputSimple(ControlP5 ctrl, String name, int xCoord, int yCoord) {
+    super(ctrl, name);
+    control = ctrl;
     this.x = xCoord;
     this.y = yCoord;
 
@@ -19,6 +22,10 @@ class GUI_GroupOutputSimple extends Group {
         .disableCollapse()
         .setVisible(false);
         ;
+
+    simpleAttributeSelector = new GUI_DropdownAttributeSelector(control, "simpleAttributeSelector", 10, 20);
+    simpleAttributeSelector.setGroup(this);
+
   }
 
 }

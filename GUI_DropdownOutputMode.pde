@@ -6,8 +6,9 @@ class GUI_DropdownOutputMode extends DropdownList {
   ControlP5 control;
   int x, y;
 
-  GUI_DropdownOutputMode(ControlP5 ctrl, int xCoord, int yCoord) {
-    super(ctrl, "outputModeSelector");
+  GUI_DropdownOutputMode(ControlP5 ctrl, String name, int xCoord, int yCoord) {
+    super(ctrl, name);
+    control = ctrl;
     this.x = xCoord;
     this.y = yCoord;
 

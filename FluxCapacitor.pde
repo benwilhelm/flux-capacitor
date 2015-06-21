@@ -11,10 +11,17 @@ Arduino arduino;
 final int ANODE_LOW  = Arduino.HIGH;
 final int ANODE_HIGH = Arduino.LOW;
 
-final int OUTPUT_MODE_SIMPLE = 128;
-final int OUTPUT_MODE_HSB    = 256;
+final int OUTPUT_MODE_SIMPLE = 2;
+final int OUTPUT_MODE_HSB    = 4;
+
+final int ATTRIBUTE_FREQUENCY =   8;
+final int ATTRIBUTE_VOLUME    =  16;
+final int ATTRIBUTE_FULLNESS  =  32;
+final int ATTRIBUTE_SPECTRUM  =  64;
+final int ATTRIBUTE_DEFINE    = 128;
 
 
+final color COLOR_DARK_GREY = color(96);
 
 void setup() {
   frameRate(30);

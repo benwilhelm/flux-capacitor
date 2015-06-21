@@ -7,8 +7,9 @@ class GUI_SliderOffset extends Slider {
 
   Random rand = new Random();
 
-  GUI_SliderOffset(ControlP5 ctrl, int xCoord, int yCoord) {
-    super(ctrl, "offsetSlider");
+  GUI_SliderOffset(ControlP5 ctrl, String name, int xCoord, int yCoord) {
+    super(ctrl, name);
+    control = ctrl;
     this.x = xCoord;
     this.y = yCoord;
 

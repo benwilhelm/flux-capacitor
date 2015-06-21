@@ -6,9 +6,8 @@ class GUI_TextfieldOutputChannels extends Textfield {
   ControlP5 control;
   int x, y;
 
-  GUI_TextfieldOutputChannels(ControlP5 ctrl, int xCoord, int yCoord) {
-    
-    super(ctrl, "outputChannels");
+  GUI_TextfieldOutputChannels(ControlP5 ctrl, String name, int xCoord, int yCoord) {
+    super(ctrl, name);
     this.control = ctrl;
     this.x = xCoord;
     this.y = yCoord;
