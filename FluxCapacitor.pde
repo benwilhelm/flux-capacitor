@@ -24,7 +24,7 @@ final int ATTRIBUTE_DEFINE    = 128;
 final color COLOR_DARK_GREY = color(96);
 
 void setup() {
-  frameRate(30);
+  // frameRate(30);
   size(800, 600, OPENGL);
   
   FC_Arduino.initialize(this);

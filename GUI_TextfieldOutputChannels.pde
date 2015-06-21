@@ -19,4 +19,18 @@ class GUI_TextfieldOutputChannels extends Textfield {
         ;
 
   }
+
+  int[] getChannels() {
+    String[] chanStrings = this.getText().split(",");
+    int[] channels = {};
+    if (chanStrings.length > 0) {
+      for (int i=0; i<chanStrings.length; i++) {
+        try {
+          int channel = Integer.parseInt(chanStrings[i].trim());
+          channels = append(channels, channel);
+        } catch (Exception e) {}
+      }
+    }
+    return channels;
+  }
 }

@@ -22,7 +22,7 @@ class View_ChannelControl {
   FC_SignalWriter signalWriter;
 
   int x, y;
-  int[] whiteChannels = { 5, 6, 9, 10, 11 };
+  int[] outputChannels;
 
   protected boolean enabled;
   protected int     outputMode;
@@ -72,9 +72,9 @@ class View_ChannelControl {
     inputEq.draw(audioAnalyzer.getScaledFeatures(), domFreqBin, audioAnalyzer.getEnvelopeMin(), audioAnalyzer.getEnvelopeMax() );
 
     if (enabled) {
+      outputChannels = outputChannelSelector.getChannels();
       outputEq.draw(env, domFreqBin-audioAnalyzer.getEnvelopeMin());
-      // signalWriter.writeSpan(whiteChannels, env);
-      // signalWriter.writeSimple(whiteChannels, env);
+      signalWriter.writeSimple(outputChannels, env);
       enableButton.setColorForeground(color(96, 192, 0));
     } else {
       enableButton.setColorForeground(color(192, 0, 0));

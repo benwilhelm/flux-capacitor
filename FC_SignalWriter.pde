@@ -30,7 +30,6 @@ class FC_SignalWriter {
 
   void writeSimple(int[] channels, float[] inputLevels) {
     int outputLevel = (int) (channelMax * max(inputLevels));
-
     for (int i=0; i<channels.length; i++) {
       writeChannel(channels[i], outputLevel);
     }
@@ -82,13 +81,10 @@ class FC_SignalWriter {
 
   void writePin(int channel, int level) {
     int intensity = channelMax - level;
-    if (level == 0) {
-      arduino.digitalWrite(channel, ANODE_LOW);
-    } else {
-      arduino.analogWrite(channel, intensity);
-    }
+    intensity = constrain(intensity, 0, channelMax);
+    arduino.analogWrite(channel, intensity);
 
-    // text(channel + ": " + level, channel * 80 - 400, 550);
+    // text(channel + ": " + level, channel * 80 - 300, 550);
   }
 
   void writeDmx(int channel, int level) {
