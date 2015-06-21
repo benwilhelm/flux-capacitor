@@ -49,7 +49,7 @@ class FC_AudioAnalyzer {
     float[] features = audioInput.getFeatures();
     float[] outputLevels = {};
 
-    float multiplyBy = translateMultiplier(signalMultiplier);
+    float multiplyBy = convertMultiplier(signalMultiplier);
 
     if (features != null && features.length > 0) {
       for (int i=0; i<features.length; i++) {
@@ -112,7 +112,7 @@ class FC_AudioAnalyzer {
    * Negative values divide, positive values multiply
    * Values between -1 and 1 do nothing
    */
-  protected float translateMultiplier(float mult) {
+  protected float convertMultiplier(float mult) {
     if (mult >= -1 && mult <= 1) {
       mult = 1;
     } else if (mult < -1) {
