@@ -35,6 +35,7 @@ class GUI_Eq {
     int domFreqX;
     if (levels.length > 0) {
       domFreqX = domFreqBin * this.w / levels.length;
+      domFreqX = constrain(domFreqX, 0, this.w);
     } else {
       domFreqX = 0;
     }

@@ -72,10 +72,9 @@ class View_ChannelControl {
     inputEq.draw(audioAnalyzer.getScaledFeatures(), domFreqBin, audioAnalyzer.getEnvelopeMin(), audioAnalyzer.getEnvelopeMax() );
 
     if (enabled) {
-      outputEq.draw(env, domFreqBin);
+      outputEq.draw(env, domFreqBin-audioAnalyzer.getEnvelopeMin());
       // signalWriter.writeSpan(whiteChannels, env);
       // signalWriter.writeSimple(whiteChannels, env);
-      text(domFreqBin + "", 10, 550);
       enableButton.setColorForeground(color(96, 192, 0));
     } else {
       enableButton.setColorForeground(color(192, 0, 0));
