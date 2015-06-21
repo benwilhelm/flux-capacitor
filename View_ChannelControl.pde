@@ -36,16 +36,17 @@ class View_ChannelControl {
     audioAnalyzer = analyzer;
     x = xCoord;
     y = yCoord;
-    inputEq  = new GUI_Eq_Input(25,  10, 150, 50);
-    outputEq = new GUI_Eq(25, 90, 150, 50);
 
     control = new ControlP5(applet);
     signalWriter = new FC_SignalWriter(FC_SignalWriter.OUTPUT_MODE_PIN);
 
-    envelopeRange    = new GUI_RangeEnvelope(control, this.x+5, this.y+65);
-    multiplierSlider = new GUI_SliderMultiplier(control, this.x+210, this.y+10);
-    offsetSlider     = new GUI_SliderOffset(control, this.x+260, this.y+10);
     enableButton     = new GUI_BangEnableChannel(control, this.x+5, this.y+10);
+    inputEq  = new GUI_Eq_Input(25,  10, 200, 50);
+    outputEq = new GUI_Eq(25, 90, 200, 50);
+    envelopeRange    = new GUI_RangeEnvelope(control, this.x+5, this.y+65);
+
+    multiplierSlider = new GUI_SliderMultiplier(control, this.x+250, this.y+10);
+    offsetSlider     = new GUI_SliderOffset(control, this.x+300, this.y+10);
 
     outputChannelSelector = new GUI_TextfieldOutputChannels(control, this.x+450, this.y+10);
     outputGroupSimple     = new GUI_GroupOutputSimple(control, this.x+350, this.y+75);
@@ -56,7 +57,6 @@ class View_ChannelControl {
   public void setup() {
     inputEq.setup();
     outputEq.setup();
-
   }
 
   public void draw() {

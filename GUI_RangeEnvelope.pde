@@ -22,7 +22,7 @@ class GUI_RangeEnvelope extends Range {
         .setBroadcast(false)
         .setPosition(x, y)
         .setLabelVisible(false)
-        .setSize(190, 20)
+        .setSize(240, 20)
         .setHandleSize(20)
         .setRange(0, FC_AudioAnalyzer.CHANNEL_MAX)
         .setRangeValues(0, FC_AudioAnalyzer.CHANNEL_MAX)
