@@ -8,8 +8,8 @@ class GUI_TextfieldAttribute extends Textfield {
   Random rand = new Random();
 
   GUI_TextfieldAttribute(ControlP5 ctrl, String name, int xCoord, int yCoord) {
-    control = ctrl;
     super(ctrl, name);
+    control = ctrl;
     this.x = xCoord;
     this.y = yCoord;
 
