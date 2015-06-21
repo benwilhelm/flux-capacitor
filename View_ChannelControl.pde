@@ -6,17 +6,19 @@ class View_ChannelControl {
   FC_AudioAnalyzer audioAnalyzer;
   GUI_Eq_Input  inputEq;
   GUI_Eq outputEq;
-  Random rand;
 
   ControlP5 control;
-  Bang enableButton;
-  Range envelopeRange;
-  Slider offsetSlider;
-  GUI_SliderMultiplier multiplierSlider;
-  Textfield outputChannelSelector;
-  DropdownList outputModeSelector;
 
-  Group outputGroupSimple, outputGroupHSB;
+  GUI_BangEnableChannel enableButton;
+  GUI_SliderMultiplier  multiplierSlider;
+  GUI_SliderOffset      offsetSlider;
+  GUI_RangeEnvelope     envelopeRange;
+
+  GUI_TextfieldOutputChannels outputChannelSelector;
+  GUI_GroupOutputSimple       outputGroupSimple;
+  GUI_GroupOutputHSB          outputGroupHSB;
+  GUI_DropdownOutputMode      outputModeSelector;
+
 
   FC_SignalWriter signalWriter;
 
@@ -29,9 +31,6 @@ class View_ChannelControl {
   final static int PANEL_WIDTH  = 640;
   final static int PANEL_HEIGHT = 170;
 
-  final protected static int OUTPUT_MODE_SIMPLE = 1;
-  final protected static int OUTPUT_MODE_HSB    = 2;
-
   View_ChannelControl(PApplet p, FC_AudioAnalyzer analyzer, int xCoord, int yCoord) {
     applet = p;
     audioAnalyzer = analyzer;
@@ -41,23 +40,23 @@ class View_ChannelControl {
     outputEq = new GUI_Eq(25, 90, 150, 50);
 
     control = new ControlP5(applet);
+    signalWriter = new FC_SignalWriter(FC_SignalWriter.OUTPUT_MODE_PIN);
 
-    rand = new Random();
+    envelopeRange    = new GUI_RangeEnvelope(control, this.x+5, this.y+65);
+    multiplierSlider = new GUI_SliderMultiplier(control, this.x+210, this.y+10);
+    offsetSlider     = new GUI_SliderOffset(control, this.x+260, this.y+10);
+    enableButton     = new GUI_BangEnableChannel(control, this.x+5, this.y+10);
+
+    outputChannelSelector = new GUI_TextfieldOutputChannels(control, this.x+450, this.y+10);
+    outputGroupSimple     = new GUI_GroupOutputSimple(control, this.x+350, this.y+75);
+    outputGroupHSB        = new GUI_GroupOutputHSB(control, this.x+350, this.y+75);
+    outputModeSelector    = new GUI_DropdownOutputMode(control, this.x+350, this.y+60);
   }
 
   public void setup() {
     inputEq.setup();
     outputEq.setup();
 
-    signalWriter = new FC_SignalWriter(FC_SignalWriter.OUTPUT_MODE_PIN);
-    envelopeRange = this.setupEnvelopeRange();
-    multiplierSlider = new GUI_SliderMultiplier(control, this.x+210, this.y+10);
-    offsetSlider = this.setupOffsetSlider();
-    enableButton = this.setupEnableBang();
-    outputChannelSelector = this.setupOutputChannelSelector();
-    outputGroupSimple = this.setupOutputGroupSimple();
-    outputGroupHSB = this.setupOutputGroupHSB();
-    outputModeSelector = this.setupOutputModeSelector();
   }
 
   public void draw() {
@@ -88,90 +87,6 @@ class View_ChannelControl {
     popMatrix();
   }
 
-
-
-  Range setupEnvelopeRange() {
-    return control.addRange("envelopeRange")
-                  .setId(rand.nextInt())
-                  .setBroadcast(false)
-                  .setPosition(this.x+5, this.y+65)
-                  .setLabelVisible(false)
-                  .setSize(190, 20)
-                  .setHandleSize(20)
-                  .setRange(0, FC_AudioAnalyzer.CHANNEL_MAX)
-                  .setRangeValues(audioAnalyzer.getEnvelopeMin(), audioAnalyzer.getEnvelopeMax())
-                  .setBroadcast(true)
-                  .setColorForeground(color(120,80))
-                  .setColorBackground(color(96,40))
-                  ;
-  }
-
-  Slider setupOffsetSlider() {
-    return control.addSlider("offsetSlider")
-                  .setId(rand.nextInt())
-                  .setBroadcast(false)
-                  .setPosition(this.x+260, this.y+10)
-                  .setSize(20,130)
-                  .setRange(-1, 1)
-                  .setValue(0)
-                  .setLabel("+/-")
-                  .setBroadcast(true);
-  }
-
-  Bang setupEnableBang() {
-    return control.addBang("enableButton")
-                  .setPosition(this.x+5, this.y+10)
-                  .setSize(10, 10)
-                  .setId(rand.nextInt())
-                  .setTriggerEvent(Bang.RELEASE)
-                  .setLabelVisible(false);
-  }
-
-  Textfield setupOutputChannelSelector() {
-    return control.addTextfield("outputChannelSelector")
-                  .setPosition(this.x+450, this.y+10)
-                  .setWidth(160)
-                  .setLabel("Output Channels")
-                  ;
-  }
-
-  DropdownList setupOutputModeSelector() {
-    DropdownList ddl = control.addDropdownList("outputModeSelector")
-                              .setId(rand.nextInt())
-                              .setLabel("Output Mode")
-                              .setPosition(this.x+350, this.y+60);
-
-    ddl.addItem("Simple", OUTPUT_MODE_SIMPLE);
-    ddl.addItem("HSB", OUTPUT_MODE_HSB);
-
-    return ddl;
-  }
-
-  Group setupOutputGroupSimple() {
-    Group group = control.addGroup("outputGroupSimple");
-    group.setPosition(this.x+350, this.y+75)
-         .setSize(260, 40)
-         .setLabel("Output Simple")
-         .setBackgroundColor(128)
-         .disableCollapse()
-         .setVisible(false);
-         ;
-
-    return group;
-  }
-
-  Group setupOutputGroupHSB() {
-    Group group = control.addGroup("outputGroupHSB");
-    group.setPosition(this.x+350, this.y+75)
-         .setSize(260, 80)
-         .setLabel("Output HSB")
-         .setBackgroundColor(128)
-         .disableCollapse()
-         .setVisible(false)
-         ;
-
-    return group;
-  }
 
   boolean toggleEnabled() {
     this.enabled = !this.enabled;

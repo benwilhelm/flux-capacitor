@@ -6,13 +6,14 @@
 class FC_AudioAnalyzer {
 
   FC_AudioInput audioInput;
+  
+  public final static int CHANNEL_MAX = 256;
 
   protected int envelopeMin = 0; 
-  protected int envelopeMax = 50; 
+  protected int envelopeMax = CHANNEL_MAX; 
   protected float signalOffset  = 0;
   protected float signalMultiplier = 1;
 
-  public final static int CHANNEL_MAX = 256;
 
   FC_AudioAnalyzer(FC_AudioInput theInput) {
     audioInput = theInput;

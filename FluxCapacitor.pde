@@ -11,6 +11,11 @@ Arduino arduino;
 final int ANODE_LOW  = Arduino.HIGH;
 final int ANODE_HIGH = Arduino.LOW;
 
+final int OUTPUT_MODE_SIMPLE = 128;
+final int OUTPUT_MODE_HSB    = 256;
+
+
+
 void setup() {
   frameRate(30);
   size(800, 600, OPENGL);
