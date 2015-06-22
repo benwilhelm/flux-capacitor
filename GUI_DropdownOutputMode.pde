@@ -17,8 +17,8 @@ class GUI_DropdownOutputMode extends DropdownList {
         .setPosition(x, y)
         ;
     
-    this.addItem("Simple", OUTPUT_MODE_SIMPLE);
-    this.addItem("HSB", OUTPUT_MODE_HSB);
+    this.addItem("Simple" , View_ChannelControl.OUTPUT_MODE_SIMPLE);
+    this.addItem("HSB"    , View_ChannelControl.OUTPUT_MODE_HSB);
 
   }
 

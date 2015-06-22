@@ -24,9 +24,9 @@ class GUI_DropdownAttributeSelector extends DropdownList {
         .setItemHeight(20)
         ;
     
-    this.addItem("Simple Volume", ATTRIBUTE_VOLUME);
-    this.addItem("Frequency Spectrum", ATTRIBUTE_SPECTRUM);
-    this.addItem("Dominant Frequency", ATTRIBUTE_FREQUENCY);
-    this.addItem("Fullness", ATTRIBUTE_FULLNESS);
+    this.addItem("Simple Volume", View_ChannelControl.ATTRIBUTE_VOLUME);
+    this.addItem("Frequency Spectrum", View_ChannelControl.ATTRIBUTE_SPECTRUM);
+    this.addItem("Dominant Frequency", View_ChannelControl.ATTRIBUTE_FREQUENCY);
+    this.addItem("Fullness", View_ChannelControl.ATTRIBUTE_FULLNESS);
   }
 }

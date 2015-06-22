@@ -23,12 +23,23 @@ class View_ChannelControl {
 
   int x, y;
   int[] outputChannels;
+  float[] env;
 
   protected boolean enabled;
-  protected int     outputMode;
+  protected int outputMode, simpleAttribute, hueAttribute, saturationAttribute, brightnessAttribute;
 
   final static int PANEL_WIDTH  = 640;
   final static int PANEL_HEIGHT = 170;
+
+  final static int OUTPUT_MODE_SIMPLE = 2;
+  final static int OUTPUT_MODE_HSB    = 4;
+
+  final static int ATTRIBUTE_FREQUENCY =   8;
+  final static int ATTRIBUTE_VOLUME    =  16;
+  final static int ATTRIBUTE_FULLNESS  =  32;
+  final static int ATTRIBUTE_SPECTRUM  =  64;
+  final static int ATTRIBUTE_DEFINE    = 128;
+
 
   View_ChannelControl(PApplet p, FC_AudioAnalyzer analyzer, int xCoord, int yCoord) {
     applet = p;
@@ -66,16 +77,15 @@ class View_ChannelControl {
     noStroke();
     fill(200);
     rect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
-    float[] env = audioAnalyzer.getEnvelope();
+    env = audioAnalyzer.getEnvelope();
     int domFreqBin = audioAnalyzer.getDominantFrequencyBin();
-    
+    outputChannels = outputChannelSelector.getChannels();
     inputEq.draw(audioAnalyzer.getScaledFeatures(), domFreqBin, audioAnalyzer.getEnvelopeMin(), audioAnalyzer.getEnvelopeMax() );
 
     if (enabled) {
-      outputChannels = outputChannelSelector.getChannels();
       outputEq.draw(env, domFreqBin-audioAnalyzer.getEnvelopeMin());
-      signalWriter.writeSimple(outputChannels, env);
       enableButton.setColorForeground(color(96, 192, 0));
+      writeChannels();
     } else {
       enableButton.setColorForeground(color(192, 0, 0));
     }
@@ -105,6 +115,106 @@ class View_ChannelControl {
         break;
     }
   }
+
+  protected void writeChannels() {
+    switch (outputMode) {
+    case OUTPUT_MODE_SIMPLE:
+      writeChannelsSimple();
+      break;
+
+    case OUTPUT_MODE_HSB:
+      writeChannelsHSB();
+      break;
+    }
+  }
+
+  protected void writeChannelsSimple() {
+    float[] levels = { 0 };
+    switch (simpleAttribute) {
+    case ATTRIBUTE_SPECTRUM:
+      levels = env;
+      signalWriter.writeSpan(outputChannels, levels);
+      break;
+
+    case ATTRIBUTE_FULLNESS:
+      float fullness = average(env);
+      levels[0] = fullness;
+      signalWriter.writeSimple(outputChannels, levels);
+      break;
+
+    case ATTRIBUTE_VOLUME:
+      float max = max(env);
+      levels[0] = max;
+      signalWriter.writeSimple(outputChannels, levels);
+      break;
+
+    case ATTRIBUTE_FREQUENCY:
+      int domFreqBin = audioAnalyzer.getDominantFrequencyBin();
+      int envMin = audioAnalyzer.getEnvelopeMin();
+      int envMax = audioAnalyzer.getEnvelopeMax();
+      float level = (float) map(domFreqBin, envMin, envMax, 0, 1);
+      levels[0] = level;
+      signalWriter.writeSimple(outputChannels, levels);
+      break;
+    }
+
+  }
+
+  protected void writeChannelsHSB() {
+    int hue        = getAttributeValue(hueAttribute);
+    int saturation = getAttributeValue(saturationAttribute);
+    int brightness = getAttributeValue(brightnessAttribute);
+
+    signalWriter.writeHsb(outputChannels, hue, saturation, brightness);
+  }
+
+  protected int getAttributeValue(int att) {
+    int ret = 0;
+    switch ( att ) {
+    case ATTRIBUTE_FULLNESS:
+      float fullness = average(env);
+      ret = (int) map(fullness, 0, 1, 0, signalWriter.getChannelMax());
+      break;
+
+    case ATTRIBUTE_VOLUME:
+      float max = max(env);
+      ret = (int) map(max, 0, 1, 0, signalWriter.getChannelMax());
+      break;
+
+    case ATTRIBUTE_FREQUENCY:
+      int domFreqBin = audioAnalyzer.getDominantFrequencyBin();
+      int envMin = audioAnalyzer.getEnvelopeMin();
+      int envMax = audioAnalyzer.getEnvelopeMax();
+      ret = (int) map(domFreqBin, envMin, envMax, 0, signalWriter.getChannelMax());
+      break;
+
+    case ATTRIBUTE_DEFINE:
+
+      GUI_TextfieldAttribute attDefiner = null;
+
+      if (att == hueAttribute) {
+        attDefiner = outputGroupHSB.hueAttributeInput;
+      }
+
+      if (att == saturationAttribute) {
+        attDefiner = outputGroupHSB.saturationAttributeInput;
+      }
+
+      if (att == brightnessAttribute) {
+        attDefiner = outputGroupHSB.brightnessAttributeInput;
+      }
+
+      if (attDefiner != null) {
+        try {
+          ret = Integer.parseInt(attDefiner.getText());
+        } catch (Exception e) {}
+      }
+      break;
+    }
+
+    return ret;
+  }
+
 
   void controlEvent(ControlEvent e) {
     int eId = e.getId();
@@ -137,6 +247,22 @@ class View_ChannelControl {
     if (eId == outputModeSelector.getId()) {
       outputMode = (int)outputModeSelector.getValue();
       toggleOutputGroups();
+    }
+
+    if (eId == outputGroupSimple.simpleAttributeSelector.getId()) {
+      simpleAttribute = (int)outputGroupSimple.simpleAttributeSelector.getValue();
+    }
+
+    if (eId == outputGroupHSB.hueAttributeSelector.getId()) {
+      hueAttribute = (int)outputGroupHSB.hueAttributeSelector.getValue();
+    }
+
+    if (eId == outputGroupHSB.saturationAttributeSelector.getId()) {
+      saturationAttribute = (int)outputGroupHSB.saturationAttributeSelector.getValue();
+    }
+
+    if (eId == outputGroupHSB.brightnessAttributeSelector.getId()) {
+      brightnessAttribute = (int)outputGroupHSB.brightnessAttributeSelector.getValue();
     }
   }
 }

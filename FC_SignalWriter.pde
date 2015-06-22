@@ -67,6 +67,25 @@ class FC_SignalWriter {
     }
   }
 
+  void writeHsb(int[] channels, int hue, int saturation, int brightness) {
+
+    color hsbColor = color(hue, saturation, brightness);
+
+    int redVal   = (int)red(hsbColor);
+    int greenVal = (int)green(hsbColor);
+    int blueVal  = (int)blue(hsbColor);
+
+    for (int i=0; i<channels.length; i++) {
+      int redChannel   = channels[i];
+      int greenChannel = channels[i]+1;
+      int blueChannel  = channels[i]+2;
+
+      writeChannel(redChannel, redVal);
+      writeChannel(greenChannel, greenVal);
+      writeChannel(blueChannel, blueVal);
+    }
+  }
+
   void writeChannel(int channel, int level) {
     switch(outputMode) {
     case OUTPUT_MODE_PIN:
@@ -91,4 +110,7 @@ class FC_SignalWriter {
     return;
   }
 
+  int getChannelMax() {
+    return channelMax;
+  }
 }

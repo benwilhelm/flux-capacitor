@@ -11,21 +11,12 @@ Arduino arduino;
 final int ANODE_LOW  = Arduino.HIGH;
 final int ANODE_HIGH = Arduino.LOW;
 
-final int OUTPUT_MODE_SIMPLE = 2;
-final int OUTPUT_MODE_HSB    = 4;
-
-final int ATTRIBUTE_FREQUENCY =   8;
-final int ATTRIBUTE_VOLUME    =  16;
-final int ATTRIBUTE_FULLNESS  =  32;
-final int ATTRIBUTE_SPECTRUM  =  64;
-final int ATTRIBUTE_DEFINE    = 128;
-
-
 final color COLOR_DARK_GREY = color(96);
 
 void setup() {
   // frameRate(30);
   size(800, 600, OPENGL);
+  colorMode(HSB);
   
   FC_Arduino.initialize(this);
   arduino = FC_Arduino.getInstance();
@@ -57,3 +48,13 @@ void controlEvent(ControlEvent e) {
   channel1Control.controlEvent(e);
   channel2Control.controlEvent(e);
 }
+
+
+float average(float[] elements) {
+  float sum = 0;
+  for (int i=0; i<elements.length; i++) {
+    sum += elements[i];
+  }
+  return sum/elements.length;
+}
+
