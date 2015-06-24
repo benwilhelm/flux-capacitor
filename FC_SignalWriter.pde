@@ -99,8 +99,7 @@ class FC_SignalWriter {
   }
 
   void writePin(int channel, int level) {
-    int intensity = channelMax - level;
-    intensity = constrain(intensity, 0, channelMax);
+    int intensity = constrain(level, 0, channelMax);
     arduino.analogWrite(channel, intensity);
 
     // text(channel + ": " + level, channel * 80 - 300, 550);

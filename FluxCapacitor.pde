@@ -8,9 +8,6 @@ View_ChannelControl channel1Control, channel2Control;
 
 Arduino arduino;
 
-final int ANODE_LOW  = Arduino.HIGH;
-final int ANODE_HIGH = Arduino.LOW;
-
 final color COLOR_DARK_GREY = color(96);
 
 void setup() {
@@ -34,7 +31,7 @@ void setup() {
 
   for (int pin=3; pin<=13; pin++) {
     arduino.pinMode(pin, Arduino.OUTPUT);
-    arduino.digitalWrite(pin, ANODE_LOW);
+    arduino.digitalWrite(pin, Arduino.LOW);
   }
 }
 
