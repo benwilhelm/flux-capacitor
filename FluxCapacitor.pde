@@ -6,19 +6,19 @@ FC_AudioInput input1;
 FC_AudioAnalyzer analyzer1, analyzer2;
 View_ChannelControl channel1Control, channel2Control;
 
-Arduino arduino;
 
 final color COLOR_DARK_GREY = color(96);
+Serial myPort;
 
 void setup() {
   // frameRate(30);
   size(800, 600, OPENGL);
   colorMode(HSB);
   
-  FC_Arduino.initialize(this);
-  arduino = FC_Arduino.getInstance();
+  String portName = Serial.list()[0];
+  myPort = new Serial(this, portName, 57600);
 
-  input1 = new FC_AudioInput(FC_AudioInput.TYPE_MIC, "");
+  input1 = new FC_AudioInput(FC_AudioInput.TYPE_TRACK, "08-Strobes.mp3");
   
   analyzer1 = new FC_AudioAnalyzer(input1);
   analyzer2 = new FC_AudioAnalyzer(input1);
@@ -29,10 +29,6 @@ void setup() {
   channel1Control.setup();
   channel2Control.setup();
 
-  for (int pin=3; pin<=13; pin++) {
-    arduino.pinMode(pin, Arduino.OUTPUT);
-    arduino.digitalWrite(pin, Arduino.LOW);
-  }
 }
 
 void draw() {

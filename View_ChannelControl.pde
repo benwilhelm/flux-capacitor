@@ -48,7 +48,7 @@ class View_ChannelControl {
     y = yCoord;
 
     control = new ControlP5(applet);
-    signalWriter = new FC_SignalWriter(FC_SignalWriter.OUTPUT_MODE_PIN);
+    signalWriter = new FC_SignalWriter();
 
     enableButton     = new GUI_BangEnableChannel(control, "enableButton", this.x+5, this.y+10);
     inputEq  = new GUI_Eq_Input(25,  10, 200, 50);

@@ -4,29 +4,13 @@
  * a DMX512 output signal
  */
 
-import cc.arduino.*;
 
 class FC_SignalWriter {
 
-  final static int OUTPUT_MODE_DMX = 512;
-  final static int OUTPUT_MODE_PIN = 13;
-  protected int outputMode, channelMax;
-  protected Arduino arduino;
-
-  FC_SignalWriter(int oMode) {
-    arduino = FC_Arduino.getInstance();
-    outputMode = oMode;
-    
-    switch(oMode) {
-    case OUTPUT_MODE_PIN:
-      channelMax = 255;
-      break;
-
-    case OUTPUT_MODE_DMX:
-      channelMax = 255;
-      break;
-    }
-  }
+  protected int channelMax = 255;
+  
+  // no setup necessary?
+  FC_SignalWriter() {}
 
   void writeSimple(int[] channels, float[] inputLevels) {
     int outputLevel = (int) (channelMax * max(inputLevels));
@@ -87,26 +71,9 @@ class FC_SignalWriter {
   }
 
   void writeChannel(int channel, int level) {
-    switch(outputMode) {
-    case OUTPUT_MODE_PIN:
-      writePin(channel, level);
-      break;
-
-    case OUTPUT_MODE_DMX:
-      writeDmx(channel, level);
-      break;
+    if (myPort.available() > 0) {
+      myPort.write( str(channel) + "c" + str(level) + "w" );
     }
-  }
-
-  void writePin(int channel, int level) {
-    int intensity = constrain(level, 0, channelMax);
-    arduino.analogWrite(channel, intensity);
-
-    // text(channel + ": " + level, channel * 80 - 300, 550);
-  }
-
-  void writeDmx(int channel, int level) {
-    return;
   }
 
   int getChannelMax() {
