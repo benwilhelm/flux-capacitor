@@ -161,14 +161,15 @@ class View_ChannelControl {
   }
 
   protected void writeChannelsHSB() {
-    int hue        = getAttributeValue(hueAttribute);
-    int saturation = getAttributeValue(saturationAttribute);
-    int brightness = getAttributeValue(brightnessAttribute);
+    int hue        = getAttributeValue(hueAttribute, "hue");
+    int saturation = getAttributeValue(saturationAttribute, "saturation");
+    int brightness = getAttributeValue(brightnessAttribute, "brightness");
 
     signalWriter.writeHsb(outputChannels, hue, saturation, brightness);
   }
 
-  protected int getAttributeValue(int att) {
+  protected int getAttributeValue(int att, String def) {
+
     int ret = 0;
     switch ( att ) {
     case ATTRIBUTE_FULLNESS:
@@ -192,15 +193,15 @@ class View_ChannelControl {
 
       GUI_TextfieldAttribute attDefiner = null;
 
-      if (att == hueAttribute) {
+      if (def == "hue") {
         attDefiner = outputGroupHSB.hueAttributeInput;
       }
 
-      if (att == saturationAttribute) {
+      if (def == "saturation") {
         attDefiner = outputGroupHSB.saturationAttributeInput;
       }
 
-      if (att == brightnessAttribute) {
+      if (def == "brightness") {
         attDefiner = outputGroupHSB.brightnessAttributeInput;
       }
 

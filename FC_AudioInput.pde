@@ -8,6 +8,7 @@ PowerSpectrum ps;
 MelSpectrum mel;
 Frequency domFreq;
 FFT fft;
+int lastDominantBin = 0;
 
 /** 
  * This class is an abstraction to allow for substitution of different
@@ -21,7 +22,7 @@ class FC_AudioInput {
   
   FC_AudioInput(int inputType, String trackName) {
     ac = new AudioContext();
-    Gain g = new Gain(ac, 2, 0.3);
+    Gain g = new Gain(ac, 2, 1.0);
     ac.out.addInput(g);
 
     switch (inputType) {
@@ -48,9 +49,9 @@ class FC_AudioInput {
     sfs.addListener(fft);
     ps = new PowerSpectrum();
     fft.addListener(ps);
-    mel = new MelSpectrum(7, 256);
+    mel = new MelSpectrum(12, FC_AudioAnalyzer.CHANNEL_MAX);
     ps.addListener(mel);
-    domFreq = new Frequency(7);
+    domFreq = new Frequency(12);
     mel.addListener(domFreq);
     ac.out.addDependent(sfs);
     ac.start();
@@ -64,12 +65,18 @@ class FC_AudioInput {
     try {
       float freq = domFreq.getFeatures();
       int bin = mel.getBinForFreq(freq);
-      if (bin == 255) {
+      if (bin == FC_AudioAnalyzer.CHANNEL_MAX - 1) {
         bin = 0;
       }
+
+      if (bin == 0) {
+        bin = lastDominantBin;
+      }
+
+      lastDominantBin = bin;
       return bin;
     } catch (Exception e) {
-      return 0;
+      return lastDominantBin;
     }
   }
 

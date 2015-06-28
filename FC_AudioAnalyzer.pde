@@ -7,7 +7,7 @@ class FC_AudioAnalyzer {
 
   FC_AudioInput audioInput;
   
-  public final static int CHANNEL_MAX = 256;
+  public final static int CHANNEL_MAX = 1024;
 
   protected int envelopeMin = 0; 
   protected int envelopeMax = CHANNEL_MAX; 

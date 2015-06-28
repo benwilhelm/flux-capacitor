@@ -11,14 +11,14 @@ final color COLOR_DARK_GREY = color(96);
 Serial myPort;
 
 void setup() {
-  // frameRate(30);
+  frameRate(30);
   size(800, 600, OPENGL);
   colorMode(HSB);
   
   String portName = Serial.list()[0];
   myPort = new Serial(this, portName, 57600);
 
-  input1 = new FC_AudioInput(FC_AudioInput.TYPE_TRACK, "08-Strobes.mp3");
+  input1 = new FC_AudioInput(FC_AudioInput.TYPE_MIC, "");
   
   analyzer1 = new FC_AudioAnalyzer(input1);
   analyzer2 = new FC_AudioAnalyzer(input1);
