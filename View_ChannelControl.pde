@@ -12,6 +12,7 @@ class View_ChannelControl {
   GUI_BangEnableChannel enableButton;
   GUI_SliderMultiplier  multiplierSlider;
   GUI_SliderOffset      offsetSlider;
+  GUI_SliderInertia     inertiaSlider;
   GUI_RangeEnvelope     envelopeRange;
 
   GUI_TextfieldOutputChannels outputChannelSelector;
@@ -56,7 +57,8 @@ class View_ChannelControl {
     envelopeRange    = new GUI_RangeEnvelope(control, "envelopeRange", this.x+5, this.y+65);
 
     multiplierSlider = new GUI_SliderMultiplier(control, "multiplierSlider", this.x+250, this.y+10);
-    offsetSlider     = new GUI_SliderOffset(control, "offsetSlider", this.x+300, this.y+10);
+    offsetSlider     = new GUI_SliderOffset(control, "offsetSlider", this.x+285, this.y+10);
+    inertiaSlider    = new GUI_SliderInertia(control, "inertiaSlider", this.x+320, this.y+10);
 
     outputChannelSelector = new GUI_TextfieldOutputChannels(control, "outputChannelSelector", this.x+450, this.y+10);
     outputGroupSimple     = new GUI_GroupOutputSimple(control, "outputGroupSimple", this.x+350, this.y+75);
@@ -242,6 +244,12 @@ class View_ChannelControl {
     if (eId == offsetSlider.getId()) {
       float val = offsetSlider.getValue();
       audioAnalyzer.setSignalOffset(val);
+    }
+
+    // INERTIA
+    if (eId == inertiaSlider.getId()) {
+      float val = inertiaSlider.getValue();
+      audioAnalyzer.setInertia(val);
     }
 
     // OUTPUT MODE SELECTOR

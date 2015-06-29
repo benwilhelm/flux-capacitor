@@ -13,7 +13,9 @@ class FC_AudioAnalyzer {
   protected int envelopeMax = CHANNEL_MAX; 
   protected float signalOffset  = 0;
   protected float signalMultiplier = 1;
-
+  protected float inertia = 0;
+  protected float[][] levelHistory = new float[CHANNEL_MAX][];
+  protected int[] domFreqBinHistory = new int[0];
 
   FC_AudioAnalyzer(FC_AudioInput theInput) {
     audioInput = theInput;
@@ -54,6 +56,17 @@ class FC_AudioAnalyzer {
     if (features != null && features.length > 0) {
       for (int i=0; i<features.length; i++) {
         float level = features[i];
+
+        int historyLength = getLevelHistoryLength();
+        if (levelHistory[i] == null) {
+          levelHistory[i] = new float[historyLength];
+          levelHistory[i] = append(levelHistory[i], 0);
+        }
+        levelHistory[i] = Arrays.copyOfRange(levelHistory[i], 0, historyLength);
+        levelHistory[i] = splice(levelHistory[i], level, 0);
+        float historicLevel = average(levelHistory[i]);
+
+        level = max(level, historicLevel);
         level *= multiplyBy;
         level += signalOffset;
         level  = constrain(level, 0, 1);
@@ -63,11 +76,14 @@ class FC_AudioAnalyzer {
     return outputLevels;
   }
 
-  /**
-   * Passthru method for audioInput.getDominantFrequency()
-   */
   public int getDominantFrequencyBin() {
-    return audioInput.getDominantFrequencyBin();
+    int bin = audioInput.getDominantFrequencyBin();
+    int historyLength = getLevelHistoryLength();
+    domFreqBinHistory = splice(domFreqBinHistory, bin, 0);
+    domFreqBinHistory = Arrays.copyOfRange(domFreqBinHistory, 0, historyLength+1);
+    int historicBin = average(domFreqBinHistory);
+    return historicBin;
+    // return max(bin, historicBin);
   }
 
   public void setEnvelopeMin(int min) {
@@ -107,6 +123,14 @@ class FC_AudioAnalyzer {
     return signalOffset;
   }
 
+  public float getInertia() {
+    return inertia;
+  }
+
+  public void setInertia(float i) {
+    inertia = i;
+  }
+
   /**
    * Poor man's log scale for the multiplier.
    * Negative values divide, positive values multiply
@@ -120,5 +144,9 @@ class FC_AudioAnalyzer {
     }
 
     return mult;
+  }
+
+  protected int getLevelHistoryLength() {
+    return (int) (inertia * frameRate);
   }
 }

@@ -69,14 +69,9 @@ class FC_AudioInput {
         bin = 0;
       }
 
-      if (bin == 0) {
-        bin = lastDominantBin;
-      }
-
-      lastDominantBin = bin;
       return bin;
     } catch (Exception e) {
-      return lastDominantBin;
+      return 0;
     }
   }
 

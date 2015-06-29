@@ -51,3 +51,11 @@ float average(float[] elements) {
   return sum/elements.length;
 }
 
+int average(int[] elements) {
+  int sum = 0;
+  for (int i=0; i<elements.length; i++) {
+    sum += elements[i];
+  }
+  return sum/elements.length;
+}
+
