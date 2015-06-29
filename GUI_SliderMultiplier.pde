@@ -16,7 +16,7 @@ class GUI_SliderMultiplier extends Slider {
         .setBroadcast(false)
         .setPosition(xCoord, yCoord)
         .setSize(20,130)
-        .setRange(-10,10)
+        .setRange(-50,50)
         .setValue(0)
         .setLabel("MULT")
         .setBroadcast(true)
