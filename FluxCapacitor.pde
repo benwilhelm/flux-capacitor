@@ -13,7 +13,6 @@ Serial myPort;
 void setup() {
   frameRate(30);
   size(800, 600, OPENGL);
-  colorMode(HSB);
   
   String portName = Serial.list()[0];
   myPort = new Serial(this, portName, 57600);

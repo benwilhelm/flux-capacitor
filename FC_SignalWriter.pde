@@ -52,7 +52,7 @@ class FC_SignalWriter {
   }
 
   void writeHsb(int[] channels, int hue, int saturation, int brightness) {
-
+    colorMode(HSB);
     color hsbColor = color(hue, saturation, brightness);
 
     int redVal   = (int)red(hsbColor);
@@ -68,6 +68,7 @@ class FC_SignalWriter {
       writeChannel(greenChannel, greenVal);
       writeChannel(blueChannel, blueVal);
     }
+    colorMode(RGB);
   }
 
   void writeChannel(int channel, int level) {
