@@ -170,6 +170,20 @@ class View_ChannelControl {
     signalWriter.writeHsb(outputChannels, hue, saturation, brightness);
   }
 
+  protected void killChannels() {
+    switch (outputMode) {
+    case OUTPUT_MODE_SIMPLE:
+      float[] zeroLevel = {0};
+      signalWriter.writeSimple(outputChannels, zeroLevel);
+      break;
+
+    case OUTPUT_MODE_HSB:
+      writeChannelsHSB();
+      signalWriter.writeHsb(outputChannels, 0, 0, 0);
+      break;
+    }
+  }
+
   protected int getAttributeValue(int att, String def) {
 
     int ret = 0;
@@ -224,7 +238,10 @@ class View_ChannelControl {
     
     // ENABLE/DISABLE
     if (eId == enableButton.getId()) {
-      toggleEnabled();
+      boolean enbl = toggleEnabled();
+      if (!enbl) {
+        killChannels();
+      }
     }
 
     // ENVELOPE RANGE
