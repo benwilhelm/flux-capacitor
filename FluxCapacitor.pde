@@ -14,8 +14,10 @@ void setup() {
   frameRate(30);
   size(800, 600, OPENGL);
   
+  println(Serial.list());
   String portName = Serial.list()[0];
-  myPort = new Serial(this, portName, 57600);
+  println(portName);
+  myPort = new Serial(this, portName, 9600);
 
   input1 = new FC_AudioInput(FC_AudioInput.TYPE_MIC, "");
   

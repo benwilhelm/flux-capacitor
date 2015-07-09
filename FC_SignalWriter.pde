@@ -72,9 +72,9 @@ class FC_SignalWriter {
   }
 
   void writeChannel(int channel, int level) {
-    if (myPort.available() > 0) {
+    // if (myPort.available() > 0) {
       myPort.write( str(channel) + "c" + str(level) + "w" );
-    }
+    // }
   }
 
   int getChannelMax() {
