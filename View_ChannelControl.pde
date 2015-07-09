@@ -20,8 +20,6 @@ class View_ChannelControl {
   GUI_GroupOutputHSB          outputGroupHSB;
   GUI_DropdownOutputMode      outputModeSelector;
 
-  FC_SignalWriter signalWriter;
-
   int x, y;
   int[] outputChannels;
   float[] env;
@@ -235,7 +233,7 @@ class View_ChannelControl {
 
   void controlEvent(ControlEvent e) {
     int eId = e.getId();
-    
+
     // ENABLE/DISABLE
     if (eId == enableButton.getId()) {
       boolean enbl = toggleEnabled();

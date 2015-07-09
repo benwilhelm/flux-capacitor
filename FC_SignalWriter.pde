@@ -8,9 +8,19 @@
 class FC_SignalWriter {
 
   protected int channelMax = 255;
-  
+  protected int[] levelArray = new int[512];
+
   // no setup necessary?
-  FC_SignalWriter() {}
+  FC_SignalWriter() {
+    Arrays.fill(levelArray, 0);
+  }
+
+  int[] setLevelArray(byte[] inputLevels) {
+    for (int i=0; i<inputLevels.length; i++) {
+      levelArray[i] = artNetListener.toInt(inputLevels[i]);
+    }
+    return levelArray;
+  }
 
   void writeSimple(int[] channels, float[] inputLevels) {
     int outputLevel = (int) (channelMax * max(inputLevels));
@@ -31,7 +41,7 @@ class FC_SignalWriter {
       int outputIndex =  (int) (i * channels.length) / inputLevels.length;
 
       if (outputIndex == outputLevels.length && i < inputLevels.length - 1) {
-        outputLevel = max(outputLevel, inputLevels[i]); 
+        outputLevel = max(outputLevel, inputLevels[i]);
       } else {
 
         if (i == inputLevels.length - 1) {
@@ -40,7 +50,7 @@ class FC_SignalWriter {
 
         outputLevel = constrain(outputLevel, 0, channelMax);
         outputLevels = append(outputLevels, (int)(outputLevel * channelMax));
-        outputLevel = 0;        
+        outputLevel = 0;
       }
     }
 
@@ -72,9 +82,15 @@ class FC_SignalWriter {
   }
 
   void writeChannel(int channel, int level) {
-    // if (myPort.available() > 0) {
-      myPort.write( str(channel) + "c" + str(level) + "w" );
-    // }
+    levelArray[channel - 1] = level;
+  }
+
+  void sendLevels() {
+    String packet = "";
+    for (int i=0; i<levelArray.length; i++) {
+      packet += str(i + 1) + "c" + str(levelArray[i]) + "w";
+    }
+    myPort.write(packet);
   }
 
   int getChannelMax() {

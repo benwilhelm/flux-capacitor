@@ -5,10 +5,13 @@ import cc.arduino.*;
 FC_AudioInput input1;
 FC_AudioAnalyzer analyzer1, analyzer2;
 View_ChannelControl channel1Control, channel2Control;
-
+ArtNetListener artNetListener;
+FC_SignalWriter signalWriter;
 
 final color COLOR_DARK_GREY = color(96);
 Serial myPort;
+
+byte[] inputDmxArray;
 
 void setup() {
   frameRate(30);
@@ -22,6 +25,7 @@ void setup() {
   myPort = new Serial(this, portName, 9600);
 
   input1 = new FC_AudioInput(FC_AudioInput.TYPE_MIC, "");
+  artNetListener = new ArtNetListener();
 
   analyzer1 = new FC_AudioAnalyzer(input1);
   analyzer2 = new FC_AudioAnalyzer(input1);
@@ -32,12 +36,23 @@ void setup() {
   channel1Control.setup();
   channel2Control.setup();
 
+  println("Setup complete.");
 }
 
 void draw() {
   background(255);
-  channel1Control.draw();
-  channel2Control.draw();
+  inputDmxArray = artNetListener.getCurrentInputDmxArray();
+  printArray(Arrays.copyOfRange(inputDmxArray, 0, 6));
+  signalWriter.setLevelArray(inputDmxArray);
+  // channel1Control.draw();
+  // channel2Control.draw();
+  signalWriter.sendLevels();
+}
+
+void exit() {
+  println( "Exiting ...");
+  artNetListener.stopArtNet();
+  super.exit();
 }
 
 void controlEvent(ControlEvent e) {

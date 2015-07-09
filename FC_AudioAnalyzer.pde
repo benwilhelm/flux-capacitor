@@ -4,8 +4,8 @@ import java.util.Arrays;
  * Class is responsible for taking the FFT from the given audio input and
  * providing the values from the selected envelope transformations
  */
-
 class FC_AudioAnalyzer {
+
 
   FC_AudioInput audioInput;
 
