@@ -1,7 +1,8 @@
 import controlP5.*;
+import java.util.Random;
 
 class GUI_BangEnableChannel extends Bang {
-  
+
   Random rand = new Random();
   ControlP5 control;
   int x, y;

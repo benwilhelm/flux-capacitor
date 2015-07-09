@@ -13,14 +13,16 @@ Serial myPort;
 void setup() {
   frameRate(30);
   size(800, 600, OPENGL);
-  
-  println(Serial.list());
-  String portName = Serial.list()[0];
+
+  println("Available Serial Ports:");
+  printArray(Serial.list());
+  String portName = Serial.list()[2];
   println(portName);
+  println("Using Port: " + portName);
   myPort = new Serial(this, portName, 9600);
 
   input1 = new FC_AudioInput(FC_AudioInput.TYPE_MIC, "");
-  
+
   analyzer1 = new FC_AudioAnalyzer(input1);
   analyzer2 = new FC_AudioAnalyzer(input1);
 
@@ -59,4 +61,3 @@ int average(int[] elements) {
   }
   return sum/elements.length;
 }
-

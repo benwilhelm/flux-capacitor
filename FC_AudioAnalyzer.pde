@@ -1,16 +1,18 @@
+import java.util.Arrays;
+
 /**
- * Class is responsible for taking the FFT from the given audio input and 
+ * Class is responsible for taking the FFT from the given audio input and
  * providing the values from the selected envelope transformations
  */
 
 class FC_AudioAnalyzer {
 
   FC_AudioInput audioInput;
-  
+
   public final static int CHANNEL_MAX = 1024;
 
-  protected int envelopeMin = 0; 
-  protected int envelopeMax = CHANNEL_MAX; 
+  protected int envelopeMin = 0;
+  protected int envelopeMax = CHANNEL_MAX;
   protected float signalOffset  = 0;
   protected float signalMultiplier = 1;
   protected float inertia = 0;
