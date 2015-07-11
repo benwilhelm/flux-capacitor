@@ -69,10 +69,10 @@ class ArtNetListener {
                 artDmxPacket.getDmxData(), 0,
                 inputDmxArrays[ subnet][ universe], 0,
                 artDmxPacket.getNumChannels());
-              println( "Received packet in universe " + universe
-                + " / subnet " + subnet + " containing "
-                + artDmxPacket.getNumChannels() + " channel values:");
-              printArray( artDmxPacket.getDmxData());
+              // println( "Received packet in universe " + universe
+              //   + " / subnet " + subnet + " containing "
+              //   + artDmxPacket.getNumChannels() + " channel values:");
+              // printArray( artDmxPacket.getDmxData());
               break;
 
             default:

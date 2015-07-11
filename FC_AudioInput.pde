@@ -10,7 +10,7 @@ Frequency domFreq;
 FFT fft;
 int lastDominantBin = 0;
 
-/** 
+/**
  * This class is an abstraction to allow for substitution of different
  * audio libraries, such as Minim or Beads. Responsible for providing a
  * raw audio signal or Fast Fourier Transform to the FC_AudioAnalyzer class
@@ -19,7 +19,7 @@ class FC_AudioInput {
 
   public static final int TYPE_TRACK = 1;
   public static final int TYPE_MIC   = 2;
-  
+
   FC_AudioInput(int inputType, String trackName) {
     ac = new AudioContext();
     Gain g = new Gain(ac, 2, 1.0);

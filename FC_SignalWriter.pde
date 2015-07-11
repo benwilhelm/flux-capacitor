@@ -10,8 +10,11 @@ class FC_SignalWriter {
   protected int channelMax = 255;
   protected int[] levelArray = new int[512];
 
-  // no setup necessary?
   FC_SignalWriter() {
+    resetLevels();
+  }
+
+  void resetLevels() {
     Arrays.fill(levelArray, 0);
   }
 
@@ -82,7 +85,9 @@ class FC_SignalWriter {
   }
 
   void writeChannel(int channel, int level) {
-    levelArray[channel - 1] = level;
+    int idx = channel-1;
+    int newLevel = levelArray[idx] + level;
+    levelArray[idx] = constrain(newLevel, 0, channelMax);
   }
 
   void sendLevels() {
@@ -95,5 +100,21 @@ class FC_SignalWriter {
 
   int getChannelMax() {
     return channelMax;
+  }
+
+  void debug(int startChan, int endChan) {
+    fill(96);
+    noStroke();
+    int x = 10;
+    int y = height - 20;
+    text("Debug Channels: ", x, y);
+    x += 125;
+    for (int i=startChan; i<=endChan; i++) {
+      int level = levelArray[i-1];
+      String out = i + ": " + level;
+      text(out, x, y);
+      rect(x+50, y - level/2, 10, level/2);
+      x += 100;
+    }
   }
 }

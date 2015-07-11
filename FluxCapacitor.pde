@@ -26,6 +26,7 @@ void setup() {
 
   input1 = new FC_AudioInput(FC_AudioInput.TYPE_MIC, "");
   artNetListener = new ArtNetListener();
+  signalWriter = new FC_SignalWriter();
 
   analyzer1 = new FC_AudioAnalyzer(input1);
   analyzer2 = new FC_AudioAnalyzer(input1);
@@ -42,10 +43,11 @@ void setup() {
 void draw() {
   background(255);
   inputDmxArray = artNetListener.getCurrentInputDmxArray();
-  printArray(Arrays.copyOfRange(inputDmxArray, 0, 6));
+  signalWriter.resetLevels();
   signalWriter.setLevelArray(inputDmxArray);
-  // channel1Control.draw();
-  // channel2Control.draw();
+  channel1Control.draw();
+  channel2Control.draw();
+  signalWriter.debug(1, 6);
   signalWriter.sendLevels();
 }
 
