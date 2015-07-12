@@ -8,7 +8,9 @@ View_ChannelControl channel1Control, channel2Control;
 ArtNetListener artNetListener;
 FC_SignalWriter signalWriter;
 
-final color COLOR_DARK_GREY = color(96);
+final color   COLOR_DARK_GREY = color(96);
+final int     DMX_ADDRESS_START = 13;
+final boolean ENABLE_ARTNET_IN  = true;
 Serial myPort;
 
 byte[] inputDmxArray;
@@ -34,8 +36,8 @@ void setup() {
   channel1Control = new View_ChannelControl(this, analyzer1, 10,  10);
   channel2Control = new View_ChannelControl(this, analyzer2, 10, 220);
 
-  channel1Control.setup();
-  channel2Control.setup();
+  channel1Control.setup(DMX_ADDRESS_START);
+  channel2Control.setup(DMX_ADDRESS_START + 12);
 
   println("Setup complete.");
 }

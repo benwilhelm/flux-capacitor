@@ -114,4 +114,8 @@ class ArtNetListener {
   public Integer getValueAt( final int index) {
     return toInt((Byte) getCurrentInputDmxArray()[ index]);
   }
+
+  public Integer getChannelValue( int channel ) {
+    return this.getValueAt( channel - 1 );
+  }
 }

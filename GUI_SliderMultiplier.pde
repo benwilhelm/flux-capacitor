@@ -1,16 +1,7 @@
-import controlP5.*;
-
-class GUI_SliderMultiplier extends Slider {
-  
-  Random rand = new Random();
-  ControlP5 control;
-  int x, y;
+class GUI_SliderMultiplier extends GUI_SliderGeneric {
 
   GUI_SliderMultiplier(ControlP5 ctrl, String name, int xCoord, int yCoord) {
-    super(ctrl, name);
-    this.control = ctrl;
-    this.x = xCoord;
-    this.y = yCoord;
+    super(ctrl, name, xCoord, yCoord);
 
     this.setId(rand.nextInt())
         .setBroadcast(false)

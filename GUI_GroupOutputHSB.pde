@@ -1,15 +1,12 @@
 import controlP5.*;
 
 class GUI_GroupOutputHSB extends Group {
-  
+
   Random rand = new Random();
   ControlP5 control;
   int x, y;
   GUI_DropdownAttributeSelector hueAttributeSelector, saturationAttributeSelector, brightnessAttributeSelector;
   GUI_TextfieldAttribute hueAttributeInput, saturationAttributeInput, brightnessAttributeInput;
-
-  Knob knobHue, knobSaturation, knobBrightness;
-
 
   GUI_GroupOutputHSB(ControlP5 ctrl, String name, int xCoord, int yCoord) {
     super(ctrl, name);

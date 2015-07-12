@@ -1,17 +1,7 @@
-import controlP5.*;
-
-class GUI_SliderInertia extends Slider {
-
-  ControlP5 control;
-  int x, y;
-
-  Random rand = new Random();
+class GUI_SliderInertia extends GUI_SliderGeneric {
 
   GUI_SliderInertia(ControlP5 ctrl, String name, int xCoord, int yCoord) {
-    super(ctrl, name);
-    control = ctrl;
-    this.x = xCoord;
-    this.y = yCoord;
+    super(ctrl, name, xCoord, yCoord);
 
     this.setId(rand.nextInt())
         .setBroadcast(false)

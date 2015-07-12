@@ -21,6 +21,7 @@ class View_ChannelControl {
   GUI_DropdownOutputMode      outputModeSelector;
 
   int x, y;
+  int startDmxChannel;
   int[] outputChannels;
   float[] env;
 
@@ -64,9 +65,10 @@ class View_ChannelControl {
 
   }
 
-  public void setup() {
+  public void setup(int startChannel) {
     inputEq.setup();
     outputEq.setup();
+    startDmxChannel = startChannel;
   }
 
   public void draw() {
@@ -87,6 +89,10 @@ class View_ChannelControl {
       writeChannels();
     } else {
       enableButton.setColorForeground(color(192, 0, 0));
+    }
+
+    if (ENABLE_ARTNET_IN) {
+      setValuesFromArtnet();
     }
 
     fill(0);
@@ -229,6 +235,30 @@ class View_ChannelControl {
     return ret;
   }
 
+  void setValuesFromArtnet() {
+    this.enabled    = artNetListener.getChannelValue(this.startDmxChannel) > 0;
+    int rangeMinDmx = artNetListener.getChannelValue(this.startDmxChannel + 1);
+    int rangeMaxDmx = artNetListener.getChannelValue(this.startDmxChannel + 2);
+    int multDmx     = artNetListener.getChannelValue(this.startDmxChannel + 3);
+    int offsetDmx   = artNetListener.getChannelValue(this.startDmxChannel + 4);
+    int inertiaDmx  = artNetListener.getChannelValue(this.startDmxChannel + 5);
+    int outputModeDmx = artNetListener.getChannelValue(this.startDmxChannel + 6);
+    int simpleOutputSelectorDmx = artNetListener.getChannelValue(this.startDmxChannel + 7);
+
+    int hueAttributeDmx = artNetListener.getChannelValue(this.startDmxChannel + 8);
+    int saturationAttributeDmx = artNetListener.getChannelValue(this.startDmxChannel + 9);
+    int brightnessAttributeDmx = artNetListener.getChannelValue(this.startDmxChannel + 10);
+
+    envelopeRange.setRangeByDmx(rangeMinDmx, rangeMaxDmx);
+    multiplierSlider.setValueDmx(multDmx);
+    offsetSlider.setValueDmx(offsetDmx);
+    inertiaSlider.setValueDmx(inertiaDmx);
+    outputModeSelector.setIndexDmx(outputModeDmx);
+    outputGroupSimple.simpleAttributeSelector.setIndexDmx(simpleOutputSelectorDmx);
+    outputGroupHSB.hueAttributeSelector.setIndexDmx(hueAttributeDmx);
+    outputGroupHSB.saturationAttributeSelector.setIndexDmx(saturationAttributeDmx);
+    outputGroupHSB.brightnessAttributeSelector.setIndexDmx(brightnessAttributeDmx);
+  }
 
   void controlEvent(ControlEvent e) {
     int eId = e.getId();
