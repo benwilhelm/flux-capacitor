@@ -134,6 +134,10 @@ class View_ChannelControl {
   }
 
   protected void writeChannelsSimple() {
+    if (env.length <= 0) {
+      return;
+    }
+    
     float[] levels = { 0 };
     switch (simpleAttribute) {
     case ATTRIBUTE_SPECTRUM:
