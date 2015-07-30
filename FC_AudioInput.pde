@@ -1,7 +1,7 @@
 import beads.*;
 import org.jaudiolibs.beads.*;
 
-
+// JavaSoundAudioIO io;
 AudioContext ac;
 ShortFrameSegmenter sfs;
 PowerSpectrum ps;
@@ -21,6 +21,8 @@ class FC_AudioInput {
   public static final int TYPE_MIC   = 2;
 
   FC_AudioInput(int inputType, String trackName) {
+    // io = new JavaSoundAudioIO();
+    // io.printMixerInfo();
     ac = new AudioContext();
     Gain g = new Gain(ac, 2, 1.0);
     ac.out.addInput(g);
@@ -49,7 +51,7 @@ class FC_AudioInput {
     sfs.addListener(fft);
     ps = new PowerSpectrum();
     fft.addListener(ps);
-    mel = new MelSpectrum(12, FC_AudioAnalyzer.CHANNEL_MAX);
+    mel = new MelSpectrum(12, FC_AudioAnalyzer.CHANNEL_MAX * 4);
     ps.addListener(mel);
     domFreq = new Frequency(12);
     mel.addListener(domFreq);

@@ -9,7 +9,7 @@ class FC_AudioAnalyzer {
 
   FC_AudioInput audioInput;
 
-  public final static int CHANNEL_MAX = 1024;
+  public final static int CHANNEL_MAX = 32;
 
   protected int envelopeMin = 0;
   protected int envelopeMax = CHANNEL_MAX;
@@ -18,6 +18,7 @@ class FC_AudioAnalyzer {
   protected float inertia = 0;
   protected float[][] levelHistory = new float[CHANNEL_MAX][];
   protected int[] domFreqBinHistory = new int[0];
+  protected int lastDominantBin = 0;
 
   FC_AudioAnalyzer(FC_AudioInput theInput) {
     audioInput = theInput;
@@ -40,19 +41,16 @@ class FC_AudioAnalyzer {
     if (levels.length > 0) {
       int eMin = envelopeMin;
       int eMax = envelopeMin < envelopeMax ? envelopeMax : envelopeMin;
-      eMax = min(eMax, levels.length-1);
+      eMax = min(eMax, levels.length);
       return Arrays.copyOfRange(levels, eMin, eMax);
     }
     return null;
   }
 
-  /**
-   * Passthru method for audioInput.getFeatures()
-   */
   public float[] getScaledFeatures() {
-    float[] features = audioInput.getFeatures();
+    float[] features = Arrays.copyOfRange(audioInput.getFeatures(), 0, FC_AudioAnalyzer.CHANNEL_MAX);
+    // return features;
     float[] outputLevels = {};
-
     float multiplyBy = convertMultiplier(signalMultiplier);
 
     if (features != null && features.length > 0) {
@@ -62,8 +60,8 @@ class FC_AudioAnalyzer {
         int historyLength = getLevelHistoryLength();
         if (levelHistory[i] == null) {
           levelHistory[i] = new float[historyLength];
-          levelHistory[i] = append(levelHistory[i], 0);
         }
+        levelHistory[i] = append(levelHistory[i], 0);
         levelHistory[i] = Arrays.copyOfRange(levelHistory[i], 0, historyLength);
         levelHistory[i] = splice(levelHistory[i], level, 0);
         float historicLevel = average(levelHistory[i]);
@@ -80,12 +78,20 @@ class FC_AudioAnalyzer {
 
   public int getDominantFrequencyBin() {
     int bin = audioInput.getDominantFrequencyBin();
-    int historyLength = getLevelHistoryLength();
-    domFreqBinHistory = splice(domFreqBinHistory, bin, 0);
-    domFreqBinHistory = Arrays.copyOfRange(domFreqBinHistory, 0, historyLength+1);
-    int historicBin = average(domFreqBinHistory);
-    return historicBin;
-    // return max(bin, historicBin);
+    int ret = bin;
+    if (bin <= envelopeMin) {
+      ret = lastDominantBin;
+    } else if ( bin > envelopeMax){
+      ret = envelopeMax + 1;
+    } else {
+      int historyLength = getLevelHistoryLength();
+      domFreqBinHistory = splice(domFreqBinHistory, bin, 0);
+      domFreqBinHistory = Arrays.copyOfRange(domFreqBinHistory, 0, historyLength+1);
+      int historicBin = average(domFreqBinHistory);
+      ret = max(bin, historicBin);
+      lastDominantBin = ret;
+    }
+    return ret;
   }
 
   public void setEnvelopeMin(int min) {

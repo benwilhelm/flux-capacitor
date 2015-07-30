@@ -19,7 +19,7 @@ class GUI_Eq {
     noStroke();
     fill(220);
     rect(0, 0, w, h);
-    
+
     fill(96);
     stroke(96);
     if (levels != null && levels.length > 0) {

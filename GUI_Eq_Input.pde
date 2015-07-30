@@ -14,7 +14,7 @@ class GUI_Eq_Input extends GUI_Eq {
     if (levels != null && levels.length > 0) {
       for (int i=0; i<this.w; i++) {
         int levelIndex = (i * levels.length) / this.w;
-        
+
         stroke(96);
         if (levelIndex >= tickMin && levelIndex < tickMax) {
           stroke(96, 192, 0);

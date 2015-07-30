@@ -137,8 +137,9 @@ class View_ChannelControl {
     if (env.length <= 0) {
       return;
     }
-    
+
     float[] levels = { 0 };
+    float max;
     switch (simpleAttribute) {
     case ATTRIBUTE_SPECTRUM:
       levels = env;
@@ -152,18 +153,21 @@ class View_ChannelControl {
       break;
 
     case ATTRIBUTE_VOLUME:
-      float max = max(env);
+      max = max(env);
       levels[0] = max;
       signalWriter.writeSimple(outputChannels, levels);
       break;
 
     case ATTRIBUTE_FREQUENCY:
+      levels = env;
+      max = max(env);
       int domFreqBin = audioAnalyzer.getDominantFrequencyBin();
       int envMin = audioAnalyzer.getEnvelopeMin();
-      int envMax = audioAnalyzer.getEnvelopeMax();
-      float level = (float) map(domFreqBin, envMin, envMax, 0, 1);
-      levels[0] = level;
-      signalWriter.writeSimple(outputChannels, levels);
+      Arrays.fill(levels, 0);
+      int levelIndex = domFreqBin - envMin;
+      levelIndex = constrain(levelIndex, 0, env.length-1);
+      levels[levelIndex] = max;
+      signalWriter.writeSpan(outputChannels, levels);
       break;
     }
 
@@ -192,6 +196,9 @@ class View_ChannelControl {
   }
 
   protected int getAttributeValue(int att, String def) {
+    if (env == null || env.length <= 0) {
+      return 0;
+    }
 
     int ret = 0;
     switch ( att ) {
@@ -253,6 +260,8 @@ class View_ChannelControl {
     int saturationAttributeDmx = artNetListener.getChannelValue(this.startDmxChannel + 9);
     int brightnessAttributeDmx = artNetListener.getChannelValue(this.startDmxChannel + 10);
 
+    int channelGroupIndex = artNetListener.getChannelValue(this.startDmxChannel + 11);
+
     envelopeRange.setRangeByDmx(rangeMinDmx, rangeMaxDmx);
     multiplierSlider.setValueDmx(multDmx);
     offsetSlider.setValueDmx(offsetDmx);
@@ -262,6 +271,7 @@ class View_ChannelControl {
     outputGroupHSB.hueAttributeSelector.setIndexDmx(hueAttributeDmx);
     outputGroupHSB.saturationAttributeSelector.setIndexDmx(saturationAttributeDmx);
     outputGroupHSB.brightnessAttributeSelector.setIndexDmx(brightnessAttributeDmx);
+    outputChannelSelector.setValueDmx(channelGroupIndex);
   }
 
   void controlEvent(ControlEvent e) {

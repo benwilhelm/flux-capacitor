@@ -9,12 +9,15 @@ class FC_SignalWriter {
 
   protected int channelMax = 255;
   protected int[] levelArray = new int[512];
+  protected int[] lastLevelArray = new int[512];
 
   FC_SignalWriter() {
-    resetLevels();
+    Arrays.fill(lastLevelArray, 0);
+    Arrays.fill(levelArray, 0);
   }
 
   void resetLevels() {
+    lastLevelArray = Arrays.copyOf(levelArray, levelArray.length);
     Arrays.fill(levelArray, 0);
   }
 
@@ -46,14 +49,9 @@ class FC_SignalWriter {
       if (outputIndex == outputLevels.length && i < inputLevels.length - 1) {
         outputLevel = max(outputLevel, inputLevels[i]);
       } else {
-
-        if (i == inputLevels.length - 1) {
-          outputIndex++;
-        }
-
         outputLevel = constrain(outputLevel, 0, channelMax);
         outputLevels = append(outputLevels, (int)(outputLevel * channelMax));
-        outputLevel = 0;
+        outputLevel = inputLevels[i];
       }
     }
 
@@ -93,7 +91,9 @@ class FC_SignalWriter {
   void sendLevels() {
     String packet = "";
     for (int i=0; i<levelArray.length; i++) {
-      packet += str(i + 1) + "c" + str(levelArray[i]) + "w";
+      if (levelArray[i] != lastLevelArray[i]) {
+        packet += str(i + 1) + "c" + str(levelArray[i]) + "w";
+      }
     }
     myPort.write(packet);
   }

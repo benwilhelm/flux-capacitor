@@ -1,7 +1,7 @@
 import controlP5.*;
 
 class GUI_TextfieldOutputChannels extends Textfield {
-  
+
   Random rand = new Random();
   ControlP5 control;
   int x, y;
@@ -32,5 +32,12 @@ class GUI_TextfieldOutputChannels extends Textfield {
       }
     }
     return channels;
+  }
+
+  void setValueDmx(int dmxValue) {
+    int idx = (int) (dmxValue / 5);
+    idx = constrain(idx, 0, CHANNEL_GROUPS.length-1);
+    String str = CHANNEL_GROUPS[idx];
+    this.setValue(str);
   }
 }

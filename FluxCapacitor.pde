@@ -7,17 +7,21 @@ FC_AudioAnalyzer analyzer1, analyzer2;
 View_ChannelControl channel1Control, channel2Control;
 ArtNetListener artNetListener;
 FC_SignalWriter signalWriter;
+String[] CHANNEL_GROUPS;
 
-final color   COLOR_DARK_GREY = color(96);
-final int     DMX_ADDRESS_START = 13;
-final boolean ENABLE_ARTNET_IN  = true;
+final color    COLOR_DARK_GREY = color(96);
+final int      DMX_ADDRESS_START = 101;
+final boolean  ENABLE_ARTNET_IN  = true;
 Serial myPort;
 
 byte[] inputDmxArray;
 
 void setup() {
-  frameRate(30);
+  frameRate(25);
   size(800, 600, OPENGL);
+
+  CHANNEL_GROUPS = loadStrings(sketchPath("") + "data/channelgroups.txt");
+  printArray(CHANNEL_GROUPS);
 
   println("Available Serial Ports:");
   printArray(Serial.list());
