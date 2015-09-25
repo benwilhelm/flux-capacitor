@@ -8,9 +8,9 @@ View_ChannelControl channel1Control, channel2Control;
 ArtNetListener artNetListener;
 FC_SignalWriter signalWriter;
 
-final color   COLOR_DARK_GREY = color(96);
-final int     DMX_ADDRESS_START = 13;
-final boolean ENABLE_ARTNET_IN  = true;
+final color    COLOR_DARK_GREY = color(96);
+final int      DMX_ADDRESS_START = 101;
+final boolean  ENABLE_ARTNET_IN  = false;
 Serial myPort;
 
 byte[] inputDmxArray;
@@ -21,7 +21,7 @@ void setup() {
 
   println("Available Serial Ports:");
   printArray(Serial.list());
-  String portName = Serial.list()[5];
+  String portName = Serial.list()[0];
   println(portName);
   println("Using Port: " + portName);
   myPort = new Serial(this, portName, 9600);
